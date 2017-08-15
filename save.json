@@ -1,0 +1,29 @@
+{
+    "background_color": {
+        "b": 180,
+        "g": 120,
+        "r": 0
+    },
+    "documents": [
+        {
+            "file_name": "C:/Users/Michał/Desktop/C1",
+            "img_file_name": "",
+            "internet_name": "asd",
+            "sync_over_internet": true,
+            "visible_name": "C1"
+        },
+        {
+            "file_name": "C:/Users/Michał/Desktop/libtins-master",
+            "img_file_name": "",
+            "internet_name": "sad",
+            "sync_over_internet": true,
+            "visible_name": "libtins-master"
+        }
+    ],
+    "resize_bar_color": {
+        "b": 220,
+        "g": 80,
+        "r": 0
+    },
+    "selected_screen_index": 0
+}
