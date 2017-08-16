@@ -16,7 +16,7 @@ MusicVisualizer::MusicVisualizer(QWidget *parent)
 	FMOD::System_Create(&system);
 	system->init(32, FMOD_INIT_NORMAL, NULL);
 	
-	system->createStream("D:/Music/Dimitri Vegas, Moguai & Like Mike Feat. Julian Perretta - Body Talk (Mammoth) (Original Mix).mp3", FMOD_DEFAULT, 0, &song);
+	system->createStream("D:/Music/Ivan Gough & Feenixpawl ft. Georgi Kay - In My Mind (Axwell Mix) [OFFICIAL VIDEO].mp3", FMOD_DEFAULT, 0, &song);
 
 	system->createDSPByType(FMOD_DSP_TYPE::FMOD_DSP_TYPE_FFT, &dsp);
 
@@ -160,7 +160,7 @@ void MusicVisualizerItem::update(double deltaTime, double sampleValue, double vo
 	
 	m_LengthTarget = qMin(volume/3,sampleValue)*(3 /volume);
 
-	if (m_LengthTarget > 0.95) {
+	if (m_LengthTarget > 0.80) {
 		int reserved = qMin(360, bursted_objects.size() + 60) - bursted_objects.size();
 		bursted_objects.reserve(qMin(360, bursted_objects.size() + 60));
 		for (int i = 0; i < reserved;i++) {
@@ -169,7 +169,7 @@ void MusicVisualizerItem::update(double deltaTime, double sampleValue, double vo
 				MathHelper::random(m_MaxLength, 1 - m_MaxLength)
 			);
 			QPointF velocityVector = QPointF(position - QPointF(MathHelper::random(m_MaxLength, 1 - m_MaxLength), MathHelper::random(m_MaxLength, 1 - m_MaxLength)));
-			velocityVector = velocityVector / qSqrt(velocityVector.x()*velocityVector.x() + velocityVector.y()*velocityVector.y()) / 4 * MathHelper::random(1, 2);
+			velocityVector = velocityVector / qSqrt(velocityVector.x()*velocityVector.x() + velocityVector.y()*velocityVector.y()) / 4 * MathHelper::random(2, 8);
 			bursted_objects.append(QPair<QPointF, QPointF>(position, velocityVector));
 		}
 	}
@@ -180,7 +180,7 @@ void MusicVisualizerItem::update(double deltaTime, double sampleValue, double vo
 		bursted_objects[i].second.setY(bursted_objects[i].second.y() + 0.981*deltaTime);
 
 		if (bursted_objects[i].first.x() < 0 || bursted_objects[i].first.x() > 1 ||
-			bursted_objects[i].first.y() < 0 || bursted_objects[i].first.y() > 1) {
+			bursted_objects[i].first.y() > 1) {
 			bursted_objects.erase(bursted_objects.begin() + i);
 		}
 	} 
