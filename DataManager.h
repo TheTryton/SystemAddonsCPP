@@ -29,13 +29,13 @@ private:
 	//LOCAL HOST IP
 	QHostAddress local_host_address;
 	//MEDIA PLAYLIST
-	QList<QUrl> playlist;
+	QList<QString> playlist;
 public:
 	bool saveData(QString filename = "config.json", bool save_as_binary = true);
 	bool loadData(QString filename = "config.json", bool load_as_binary = true);
 
-	QList<QUrl> getPlaylist();
-	void setPlaylist(QList<QUrl> playlist);
+	QList<QString> getPlaylist();
+	void setPlaylist(QList<QString> playlist);
 
 	QColor getBackgroundColor();
 	QColor getDefaultBackgroundColor();

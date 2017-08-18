@@ -58,6 +58,14 @@ bool DataManager::saveData(QString filename, bool save_as_binary)
 		}
 		root_data_object["bookmarks_data"] = bookmarks_data;
 	}
+	//PLAYLIST DATA
+	{
+		QJsonArray playlist_data;
+		for (int i = 0; i < this->playlist.size(); i++) {
+			playlist_data.append(this->playlist[i]);
+		}
+		root_data_object["playlist_data"] = playlist_data;
+	}
 	QJsonDocument save_document(root_data_object);
 	save_file.write(save_as_binary ? save_document.toBinaryData() : save_document.toJson());
 
@@ -185,6 +193,18 @@ bool DataManager::loadData(QString filename, bool load_as_binary)
 				root_data_object["bookmarks_data"] = bookmarks_data;
 			}
 		}
+		//PLAYLIST DATA
+		if (root_data_object.contains("playlist_data")) {
+			this->playlist.clear();
+			if (root_data_object["playlist_data"].isArray()) {
+				QJsonArray playlist_data = root_data_object["playlist_data"].toArray();
+				for (int i = 0; i < playlist_data.size(); i++) {
+					if (playlist_data[i].isString()) {
+						playlist.append(playlist_data[i].toString());
+					}
+				}
+			}
+		}
 	}
 
 	load_file.close();
@@ -192,12 +212,12 @@ bool DataManager::loadData(QString filename, bool load_as_binary)
 	return true;
 }
 
-QList<QUrl> DataManager::getPlaylist()
+QList<QString> DataManager::getPlaylist()
 {
 	return playlist;
 }
 
-void DataManager::setPlaylist(QList<QUrl> playlist)
+void DataManager::setPlaylist(QList<QString> playlist)
 {
 	this->playlist = playlist;
 }

@@ -32,6 +32,8 @@ protected:
 public:
 	const float& showPercent();
 	void setShowPercent(const float& val);
+	void freezePopup(bool freeze = false);
+	bool isPopupFrozen();
 private:
 	//POPUP CONTROL VARIABLES
 	bool is_resized = false;
@@ -46,14 +48,16 @@ private:
 	QTimer* mouse_pos_check_timer = NULL;
 
 	QStateMachine* window_state_machine = NULL;
+	bool m_FreezeStateMachine = false;
 
 	QSystemTrayIcon* system_tray_icon = NULL;
 	QMenu* system_tray_icon_context_menu = NULL;
 	QAction* is_locked_context_menu_action = NULL;
 	//DATA MANAGER POINTER
-	DataManager* data_manager;
+	DataManager* data_manager = NULL;
 	//MUSIC PLAYER
-	MusicPlayer* music_player;
+	MusicPlayer* music_player = NULL;
+	MusicPlaylist* music_player_playlist = NULL;
 signals:
 	void showSignal();
 	void hideSignal();

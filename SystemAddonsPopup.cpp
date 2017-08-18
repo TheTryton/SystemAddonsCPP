@@ -103,14 +103,6 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 			music_player->setPalette(palette);
 		});
 
-		MusicPlaylist* playlist = new MusicPlaylist();
-		playlist->addMusic(QUrl("D:/Music/JayKode - Know Better (feat. Mister Blonde).mp3"));
-		playlist->addMusic(QUrl("D:/Music/The Magician ft. Years and Years - Sunlight (Elephante Remix).mp3"));
-		playlist->addMusic(QUrl("D:/Music/Robin Schulz - Sun Goes Down feat. Jasmine Thompson (Official Video).mp3"));
-		playlist->addMusic(QUrl("D:/Music/Ivan Gough & Feenixpawl ft. Georgi Kay - In My Mind (Axwell Mix) [OFFICIAL VIDEO].mp3"));
-		playlist->setPlaybackMode(MusicPlaylist::PlaybackMode::Random);
-
-		music_player->setPlaylist(playlist);
 		music_player->attachVisualiser();
 
 		music_player->play();
@@ -137,8 +129,8 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 		bookmarks_music_layout->setMargin(0);
 		bookmarks_music_layout->setSpacing(0);
 
-		bookmarks_music_layout->addWidget(management_container_widget);
-		bookmarks_music_layout->addWidget(music_player);
+		bookmarks_music_layout->addWidget(management_container_widget,7);
+		bookmarks_music_layout->addWidget(music_player,3);
 
 		root_layout = new QVBoxLayout();
 
@@ -298,6 +290,16 @@ void SystemAddonsPopup::setShowPercent(const float& val)
 {
 	percent_shown = val;
 	this->move(QPoint(0,-this->size().height() + this->size().height()*percent_shown));
+}
+
+void SystemAddonsPopup::freezePopup(bool freeze)
+{
+	is_locked = freeze;
+}
+
+bool SystemAddonsPopup::isPopupFrozen()
+{
+	return is_locked;
 }
 
 SystemAddonsPopup::~SystemAddonsPopup()

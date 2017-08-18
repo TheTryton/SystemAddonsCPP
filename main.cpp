@@ -22,7 +22,5 @@ int main(int argc, char *argv[])
 		system_addons_popup->show();
 		app.exec();
 	}
-
-	app.exec();
 	return 0;
 }

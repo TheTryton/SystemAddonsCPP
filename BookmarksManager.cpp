@@ -4,6 +4,8 @@
 #include "DataManager.h"
 #include "InternetNameSelectionDialog.h"
 
+#include "SystemAddonsPopup.h"
+
 #include <QColorDialog>
 #include <QApplication>
 #include <QMouseEvent>
@@ -51,11 +53,22 @@ BookmarksManager::BookmarksManager(QWidget * parent) : QWidget(parent) {
 			//CHANGE COLOR
 			QAction* change_background_color = new QAction(u8"Change background color", this);
 			QObject::connect(change_background_color, &QAction::triggered, [&](bool checked) {
-				QColor color = QColorDialog::getColor(data_manager->getBackgroundColor(), this, "Change background color");
-				if (color != Qt::black) {
+				QColorDialog dialog(this);
+
+				QColor final_color = data_manager->getDefaultBackgroundColor();
+
+				QObject::connect(&dialog, &QColorDialog::currentColorChanged, this, [&](const QColor & color) {
 					data_manager->setBackgroundColor(QColor(color.red(), color.green(), color.blue(), 180));
 					emit changedColor();
-				}
+				});
+				QObject::connect(&dialog, &QColorDialog::colorSelected, this, [&](const QColor & color) {
+					final_color = QColor(color.red(), color.green(), color.blue(), 180);
+				});
+				dialog.exec();
+
+				data_manager->setBackgroundColor(QColor(final_color.red(), final_color.green(), final_color.blue(), 180));
+				emit changedColor();
+				data_manager->saveData();
 			});
 			background_color_menu->addAction(change_background_color);
 
@@ -74,11 +87,22 @@ BookmarksManager::BookmarksManager(QWidget * parent) : QWidget(parent) {
 		{
 			QAction* change_resize_bar_color = new QAction(u8"Change resize bar color", this);
 			QObject::connect(change_resize_bar_color, &QAction::triggered, [&](bool checked) {
-				QColor color = QColorDialog::getColor(data_manager->getResizeBarColor(), this, "Change resize bar color");
-				if (color != Qt::black) {
-					data_manager->setResizeBarColor(QColor(color.red(), color.green(), color.blue(), 200));
+				QColorDialog dialog(this);
+				
+				QColor final_color = data_manager->getDefaultResizeBarColor();
+
+				QObject::connect(&dialog, &QColorDialog::currentColorChanged, this, [&](const QColor & color) {
+					data_manager->setResizeBarColor(QColor(color.red(), color.green(), color.blue(), 180));
 					emit changedColor();
-				}
+				});
+				QObject::connect(&dialog, &QColorDialog::colorSelected, this, [&](const QColor & color) {
+					final_color = QColor(color.red(), color.green(), color.blue(), 180);
+				});
+				dialog.exec();
+
+				data_manager->setResizeBarColor(QColor(final_color.red(), final_color.green(), final_color.blue(), 180));
+				emit changedColor();
+				data_manager->saveData();
 			});
 			resize_bar_color_menu->addAction(change_resize_bar_color);
 
@@ -100,6 +124,11 @@ BookmarksManager::BookmarksManager(QWidget * parent) : QWidget(parent) {
 			QApplication::exit();
 		});
 		right_button_context_menu->addAction(exit);
+
+		//UNLOCK
+		QObject::connect(right_button_context_menu, &QMenu::aboutToHide, [=]() {
+			SystemAddonsPopup::getInstance()->freezePopup(false);
+		});
 	}
 	//SYNC IMAGE INITIALIZATION
 	{
@@ -164,6 +193,7 @@ void BookmarksManager::mousePressEvent(QMouseEvent * event)
 	if (event->button() == Qt::RightButton) {
 		if (event->pos().x() % (item_size.width() + item_spacing.width()) < item_spacing.width() ||
 			event->pos().y() % (item_size.height() + item_spacing.height()) < item_spacing.height()) {
+			SystemAddonsPopup::getInstance()->freezePopup(true);
 			right_button_context_menu->exec(mapToGlobal(event->pos()));
 		}
 		else {
@@ -287,6 +317,11 @@ void BookmarksManager::mousePressEvent(QMouseEvent * event)
 				});
 				item_menu.addAction(open_file_location);
 
+				SystemAddonsPopup::getInstance()->freezePopup(true);
+
+				QObject::connect(&item_menu, &QMenu::aboutToHide, [=]() {
+					SystemAddonsPopup::getInstance()->freezePopup(false);
+				});
 				item_menu.exec(event->pos());
 			}
 		}
