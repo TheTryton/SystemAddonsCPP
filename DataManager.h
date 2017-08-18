@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QList>
+#include <QMediaPlaylist>
 
 #include "BookmarkItem.h"
 #include "InternetName.h"
@@ -27,9 +28,14 @@ private:
 	QMap<QString, QVariant> popup_configuration_data;
 	//LOCAL HOST IP
 	QHostAddress local_host_address;
+	//MEDIA PLAYLIST
+	QList<QUrl> playlist;
 public:
 	bool saveData(QString filename = "config.json", bool save_as_binary = true);
 	bool loadData(QString filename = "config.json", bool load_as_binary = true);
+
+	QList<QUrl> getPlaylist();
+	void setPlaylist(QList<QUrl> playlist);
 
 	QColor getBackgroundColor();
 	QColor getDefaultBackgroundColor();

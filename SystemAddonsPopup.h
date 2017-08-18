@@ -7,11 +7,13 @@
 #include <QSystemTrayIcon>
 
 #include "BookmarksManager.h"
+#include "MusicPlayer.h"
 
 class SystemAddonsPopup : public QWidget
 {
 	Q_OBJECT
 	Q_PROPERTY(float showPercent READ showPercent WRITE setShowPercent)
+	friend class MusicPlayer;
 public:
 	static SystemAddonsPopup* getInstance();
 
@@ -39,6 +41,7 @@ private:
 	QLabel* resize_bar_widget = NULL;
 	BookmarksManager* management_container_widget = NULL;
 	QVBoxLayout* root_layout = NULL;
+	QHBoxLayout* bookmarks_music_layout = NULL;
 
 	QTimer* mouse_pos_check_timer = NULL;
 
@@ -49,6 +52,8 @@ private:
 	QAction* is_locked_context_menu_action = NULL;
 	//DATA MANAGER POINTER
 	DataManager* data_manager;
+	//MUSIC PLAYER
+	MusicPlayer* music_player;
 signals:
 	void showSignal();
 	void hideSignal();

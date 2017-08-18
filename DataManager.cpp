@@ -192,6 +192,16 @@ bool DataManager::loadData(QString filename, bool load_as_binary)
 	return true;
 }
 
+QList<QUrl> DataManager::getPlaylist()
+{
+	return playlist;
+}
+
+void DataManager::setPlaylist(QList<QUrl> playlist)
+{
+	this->playlist = playlist;
+}
+
 QColor DataManager::getBackgroundColor()
 {
 	return popup_configuration_data["background_color"].value<QColor>();

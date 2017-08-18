@@ -24,29 +24,10 @@ SystemAddonsPopup* SystemAddonsPopup::instance = NULL;
 SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 	: QWidget(parent)
 {
-	/*QMediaPlayer* player = new QMediaPlayer;
-
-	QMediaPlaylist* playlist = new QMediaPlaylist;
-	playlist->addMedia(QUrl("D:/Music/Janji - Heroes Tonight (feat. Johnning) [NCS Release].mp3"));
-	playlist->setCurrentIndex(0);
-	player->setPlaylist(playlist);
-
-	QAudioProbe* probe = new QAudioProbe;
-	probe->setSource(player);
-	QObject::connect(probe, &QAudioProbe::audioBufferProbed,this, [&](const QAudioBuffer &buffer) {
-		cout << "asd" << endl;
-	});
-	cout << probe->isActive();
-
-	player->setVolume(30);
-	
-	player->play();
-	player->setPlaybackRate(6.5);*/
-
 	QSize selected_screen_size;
 
 	NetworkManager::getInstance()->startScanning();
-
+	
 	//DATA MANAGER INITIALIZATION
 	{
 		data_manager = DataManager::getInstance();
@@ -104,6 +85,36 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 			resize_bar_widget->setPalette(pal);
 		});
 	}
+	//MUSIC PLAYER INITIALIZATION
+	{
+		music_player = MusicPlayer::getInstance();
+
+		QPalette palette = music_player->palette();
+		palette.setBrush(QPalette::Window, QBrush(data_manager->getBackgroundColor()));
+		music_player->setAutoFillBackground(true);
+		music_player->setPalette(palette);
+
+		music_player->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Tool);
+		
+		QObject::connect(management_container_widget, &BookmarksManager::changedColor, [&]() {
+			QPalette palette = music_player->palette();
+			palette.setBrush(QPalette::Window, QBrush(data_manager->getBackgroundColor()));
+			music_player->setAutoFillBackground(true);
+			music_player->setPalette(palette);
+		});
+
+		MusicPlaylist* playlist = new MusicPlaylist();
+		playlist->addMusic(QUrl("D:/Music/JayKode - Know Better (feat. Mister Blonde).mp3"));
+		playlist->addMusic(QUrl("D:/Music/The Magician ft. Years and Years - Sunlight (Elephante Remix).mp3"));
+		playlist->addMusic(QUrl("D:/Music/Robin Schulz - Sun Goes Down feat. Jasmine Thompson (Official Video).mp3"));
+		playlist->addMusic(QUrl("D:/Music/Ivan Gough & Feenixpawl ft. Georgi Kay - In My Mind (Axwell Mix) [OFFICIAL VIDEO].mp3"));
+		playlist->setPlaybackMode(MusicPlaylist::PlaybackMode::Random);
+
+		music_player->setPlaylist(playlist);
+		music_player->attachVisualiser();
+
+		music_player->play();
+	}
 	//RESIZE BAR INITIALIZATION
 	{
 		resize_bar_widget = new QLabel(this);
@@ -121,12 +132,20 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 	}
 	//LAYOUT INITIALIZATION
 	{
-		root_layout = new QVBoxLayout(this);
+		bookmarks_music_layout = new QHBoxLayout();
+
+		bookmarks_music_layout->setMargin(0);
+		bookmarks_music_layout->setSpacing(0);
+
+		bookmarks_music_layout->addWidget(management_container_widget);
+		bookmarks_music_layout->addWidget(music_player);
+
+		root_layout = new QVBoxLayout();
 
 		root_layout->setMargin(0);
 		root_layout->setSpacing(0);
 
-		root_layout->addWidget(management_container_widget);
+		root_layout->addLayout(bookmarks_music_layout);
 		root_layout->addWidget(resize_bar_widget);
 
 		this->setLayout(root_layout);
@@ -249,23 +268,25 @@ void SystemAddonsPopup::mouseReleaseEvent(QMouseEvent * event)
 }
 
 SystemAddonsPopup* SystemAddonsPopup::getInstance() {
-	QSharedMemory *single_app = new QSharedMemory("SharedMemoryForSystemAddons", NULL);
-	if (single_app->attach(QSharedMemory::ReadOnly)) {
-		single_app->detach();
-		QMessageBox::warning(NULL, "", "Another instance of System Addons is already running");
-		return NULL;
-	}
-	else {
-		if (single_app->create(1)) {
-			if (SystemAddonsPopup::instance == NULL) SystemAddonsPopup::instance = new SystemAddonsPopup();
-			return SystemAddonsPopup::instance;
-		}
-		else {
+	if (SystemAddonsPopup::instance == NULL) {
+		QSharedMemory *single_app = new QSharedMemory("SharedMemoryForSystemAddons", NULL);
+		if (single_app->attach(QSharedMemory::ReadOnly)) {
+			single_app->detach();
 			QMessageBox::warning(NULL, "", "Another instance of System Addons is already running");
 			return NULL;
 		}
+		else {
+			if (single_app->create(1)) {
+				SystemAddonsPopup::instance = new SystemAddonsPopup();
+				return SystemAddonsPopup::instance;
+			}
+			else {
+				QMessageBox::warning(NULL, "", "Another instance of System Addons is already running");
+				return NULL;
+			}
+		}
 	}
-	return NULL;
+	return SystemAddonsPopup::instance;
 }
 
 const float& SystemAddonsPopup::showPercent()
