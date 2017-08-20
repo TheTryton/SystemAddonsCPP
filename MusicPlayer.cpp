@@ -1,7 +1,6 @@
 #include "MusicPlayer.h"
 #include "MathHelper.h"
 #include "SystemAddonsPopup.h"
-
 #pragma comment(lib,"FMOD/fmod64_vc.lib")
 
 #include <QtMultimedia>
@@ -18,6 +17,10 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 	//SOUND SYSTEM INITIALIZATION
 	{
 		init();
+	}
+	//DATA MANAGER
+	{
+		data_manager = DataManager::getInstance();
 	}
 	//CREATING WINDOW LAYOUT
 	{
@@ -71,7 +74,29 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 			playlist_visualiser_layout->addWidget(playlist_music_selector, 3);
 			playlist_music_selector->setMinimumWidth(200);
 			playlist_music_selector->setMaximumWidth(300);
-			playlist_music_selector->setSelectionMode(QAbstractItemView::SingleSelection);
+			playlist_music_selector->setStyleSheet(
+				"QListWidget {"
+				"	background:	qradialgradient(cx:0.5, cy:0.5, radius: 1,"
+				"				fx:0.5, fy : 0.5, stop : 0 white, stop : 1 green)"
+				"}"
+				"QListWidget::item:selected{"
+				"	background: 1px solid rgb(255,0,0);"
+				"}"/*
+
+				"QListWidget::item : selected : !active{"
+				"	background: qlineargradient(x1 : 0, y1 : 0, x2 : 0, y2 : 1,"
+				"								stop : 0 #ABAFE5, stop: 1 #8588B2);"
+				"}"
+
+				"QListWidget::item : selected : active{"
+				"	background: qlineargradient(x1 : 0, y1 : 0, x2 : 0, y2 : 1,"
+				"								stop : 0 #6a6ea9, stop: 1 #888dd9);"
+				"}"
+
+				"QListWidget::item : hover{"	
+				"	background: qlineargradient(x1 : 0, y1 : 0, x2 : 0, y2 : 1,"
+				"	stop : 0 #FAFBFE, stop: 1 #DCDEF1);"
+				"}"*/);
 			void(QListWidget::*fun1)(int) = &QListWidget::currentRowChanged;
 			QObject::connect(playlist_music_selector, fun1, this, [&](int index) {
 				if (index != -1) {
@@ -100,8 +125,6 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 				"	background: none;"
 				"	color: none;"
 				"}"
-				""
-				""
 			);
 			QObject::connect(position_slider, &QSlider::valueChanged, [&](int value) {
 				if (qAbs(position() - value) > 100)this->setPosition(value);
@@ -124,8 +147,9 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 				buttons_layout->setAlignment(Qt::AlignmentFlag::AlignBottom | Qt::AlignmentFlag::AlignHCenter);
 
 				buttons_layout->addWidget(random_button);
-				random_button->setText("RNG");
-				random_button->setFixedSize(20, 20);
+				random_button->setFlat(true);
+				random_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_control/shuffle_inactive.png"));
+				random_button->setFixedSize(32, 32);
 				buttons_layout->addWidget(repeat_button);
 				repeat_button->setText("REP");
 				repeat_button->setFixedSize(20, 20);
@@ -153,7 +177,7 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 				pause_button->setText("P");
 				pause_button->setFixedSize(20, 20);
 				QObject::connect(pause_button, &QPushButton::released, [&]() {
-					pause((state() == State::PausedState) ? false : true);
+					pause((state() == MusicState::PausedState) ? false : true);
 				});
 				buttons_layout->addWidget(next_button);
 				next_button->setText(">");
@@ -172,11 +196,6 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 	//WIDGET INITIALIZATION
 	{
 		this->setAcceptDrops(true);
-		this->setMaximumWidth((double)QApplication::screens()[QApplication::desktop()->primaryScreen()]->availableSize().width() / 2);
-	}
-	//DATA MANAGER
-	{
-		data_manager = DataManager::getInstance();
 	}
 	//CREATE PLAYLIST
 	{
@@ -239,13 +258,14 @@ void MusicPlayer::init()
 		refresh_callback_timer = new QTimer();
 		QObject::connect(refresh_callback_timer, &QTimer::timeout, [&]() {
 			emit positionChanged(position());
-
-			if (position() >= duration()) {
-				if (m_MusicPlaylist) {
-					m_MusicPlaylist->next();
-					play();
-					emit currentMusicChanged(m_MusicPlaylist->currentMusicName());
-					emit currentMusicChanged(m_MusicPlaylist->currentIndex());
+			if (state() != MusicState::StoppedState) {
+				if (position() >= duration()) {
+					if (m_MusicPlaylist) {
+						m_MusicPlaylist->next();
+						play();
+						emit currentMusicChanged(m_MusicPlaylist->currentMusicName());
+						emit currentMusicChanged(m_MusicPlaylist->currentIndex());
+					}
 				}
 			}
 		});
@@ -266,6 +286,11 @@ void MusicPlayer::detachVisualiser()
 MusicVisualiser * MusicPlayer::visualiser()
 {
 	return music_visualiser;
+}
+
+MusicPlaylist * MusicPlayer::playlist()
+{
+	return m_MusicPlaylist;
 }
 
 bool MusicPlayer::addMusic(const QString & music)
@@ -386,20 +411,20 @@ float MusicPlayer::volume()
 	return volume;
 }
 
-MusicPlayer::State MusicPlayer::state()
+MusicPlayer::MusicState MusicPlayer::state()
 {
 	bool is_paused = false;
 	m_MainChannelGroup->getPaused(&is_paused);
 	if (is_paused) {
-		return MusicPlayer::State::PausedState;
+		return MusicPlayer::MusicState::PausedState;
 	}
 	else {
 		bool is_playing = false;
 		m_MainChannelGroup->isPlaying(&is_playing);
-		return is_playing ? MusicPlayer::State::PlayingState : MusicPlayer::State::StoppedState;
+		return is_playing ? MusicPlayer::MusicState::PlayingState : MusicPlayer::MusicState::StoppedState;
 	}
 
-	return MusicPlayer::State::StoppedState;
+	return MusicPlayer::MusicState::StoppedState;
 }
 
 MusicPlayer * MusicPlayer::getInstance()
@@ -408,11 +433,6 @@ MusicPlayer * MusicPlayer::getInstance()
 		MusicPlayer::instance = new MusicPlayer();
 	}
 	return MusicPlayer::instance;
-}
-
-void MusicPlayer::resizeEvent(QResizeEvent * event)
-{
-	this->setMinimumWidth(qMin(event->size().height() / 9.0*32.0, (double)QApplication::screens()[QApplication::desktop()->primaryScreen()]->availableSize().width() / 2));
 }
 
 void MusicPlayer::dragEnterEvent(QDragEnterEvent * event)
@@ -429,6 +449,14 @@ void MusicPlayer::dropEvent(QDropEvent * event)
 			}
 		}
 	}
+}
+
+void MusicPlayer::closeEvent(QCloseEvent * event)
+{
+	event->setAccepted(false);
+	this->stop();
+	emit hiding();
+	this->hide();
 }
 
 void MusicPlayer::pause(bool pause)
@@ -520,7 +548,7 @@ void MusicPlayer::setVolume(float volume)
 
 void MusicPlayer::stop()
 {
-	m_MainChannel->stop();
+	m_MainChannelGroup->stop();
 
 	emit stateChanged(state());
 }

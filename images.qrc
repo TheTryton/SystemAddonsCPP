@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/SystemAddonsPopup">
+        <file>icons/visualiser_control/change_screen_left.png</file>
+        <file>icons/visualiser_control/change_screen_right.png</file>
+        <file>icons/visualiser_control/go_fullscreen.png</file>
+        <file>icons/network/sync.png</file>
+        <file>icons/music_control/backward.png</file>
+        <file>icons/music_control/forward.png</file>
+        <file>icons/music_control/next.png</file>
+        <file>icons/music_control/pause.png</file>
+        <file>icons/music_control/play.png</file>
+        <file>icons/music_control/previous.png</file>
+        <file>icons/music_control/repeat_active.png</file>
+        <file>icons/music_control/repeat_active_one.png</file>
+        <file>icons/music_control/repeat_inactive.png</file>
+        <file>icons/music_control/shuffle_active.png</file>
+        <file>icons/music_control/shuffle_inactive.png</file>
+        <file>icons/System Addons.ico</file>
+        <file>icons/music_active.png</file>
+        <file>icons/music_inactive.png</file>
+    </qresource>
+</RCC>

@@ -40,7 +40,7 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 		this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::Tool);
 		this->setAttribute(Qt::WA_TranslucentBackground);
 		QPalette pal = this->palette();
-		pal.setColor(QPalette::Window, Qt::transparent);
+		pal.setColor(QPalette::Window, QColor(255,255,255,0));
 		this->setAutoFillBackground(true);
 		this->setPalette(pal);
 
@@ -52,8 +52,7 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 		this->setMaximumHeight(selected_screen_size.height() / 2);
 
 		this->setGeometry(QRect(QPoint(0, 0), QSize(selected_screen_size.width(), selected_screen_size.height() / 9)));
-
-		this->setWindowIcon(QIcon("SystemAddons.ico"));
+		this->setWindowIcon(QIcon(u8":/SystemAddonsPopup/icons/System Addons.ico"));
 	}
 	//DOCUMENT MANAGER INITIALIZATION
 	{
@@ -63,6 +62,7 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 		palette.setBrush(QPalette::Window, QBrush(data_manager->getBackgroundColor()));
 		management_container_widget->setAutoFillBackground(true);
 		management_container_widget->setPalette(palette);
+		management_container_widget->setFixedWidth(width() - 80);
 		QObject::connect(management_container_widget, &BookmarksManager::shouldLock, [&]() {
 			is_locked = true;
 			is_locked_context_menu_action->setChecked(is_locked);
@@ -76,36 +76,66 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 			palette.setBrush(QPalette::Window, QBrush(data_manager->getBackgroundColor()));
 			management_container_widget->setPalette(palette);
 
-			QPalette pal = resize_bar_widget->palette();
+			palette = resize_bar_widget->palette();
 			QLinearGradient grad = QLinearGradient(0, 0, 0, 8);
 			grad.setColorAt(0.0, data_manager->getBackgroundColor());
 			grad.setColorAt(0.6, data_manager->getResizeBarColor());
 			grad.setColorAt(1.0, data_manager->getResizeBarColor());
-			pal.setBrush(QPalette::Window, grad);
-			resize_bar_widget->setPalette(pal);
+			palette.setBrush(QPalette::Window, grad);
+			resize_bar_widget->setPalette(palette);
+
+			palette = music_player_color_filler->palette();
+			palette.setBrush(QPalette::Window, QBrush(data_manager->getBackgroundColor()));
+			music_player_color_filler->setAutoFillBackground(true);
 		});
 	}
 	//MUSIC PLAYER INITIALIZATION
 	{
-		music_player = MusicPlayer::getInstance();
-
-		QPalette palette = music_player->palette();
+		music_player_color_filler = new QWidget;
+		QPalette palette = music_player_color_filler->palette();
 		palette.setBrush(QPalette::Window, QBrush(data_manager->getBackgroundColor()));
-		music_player->setAutoFillBackground(true);
-		music_player->setPalette(palette);
+		music_player_color_filler->setAutoFillBackground(true);
+		music_player_color_filler->setPalette(palette);
+		music_player_color_filler->setFixedWidth(76);
 
-		music_player->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Tool);
-		
-		QObject::connect(management_container_widget, &BookmarksManager::changedColor, [&]() {
-			QPalette palette = music_player->palette();
-			palette.setBrush(QPalette::Window, QBrush(data_manager->getBackgroundColor()));
-			music_player->setAutoFillBackground(true);
-			music_player->setPalette(palette);
+		music_player_separator = new QFrame;
+		music_player_separator->setFrameShape(QFrame::Shape::VLine);
+		music_player_separator->setStyleSheet(""
+			"QFrame{"
+			"	border: 2px solid white"
+			"}");
+		music_player_separator->setFixedWidth(4);
+
+		music_player_show_button = new QPushButton;
+		music_player_show_button->setFixedSize(60, 60);
+		music_player_show_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_inactive.png"));
+		music_player_show_button->setIconSize(QSize(56, 56));
+		music_player_show_button->setFlat(true);
+		QObject::connect(music_player_show_button, &QPushButton::released, [&]() {
+			if (music_player->isVisible()) 
+			{
+				music_player_show_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_inactive.png"));
+				music_player->stop();
+				music_player->hide();
+			}
+			else
+			{
+				music_player_show_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_active.png"));
+				music_player->play();
+				music_player->show();
+				music_player->repaint();
+			}
 		});
 
+		music_player = MusicPlayer::getInstance();
 		music_player->attachVisualiser();
+		music_player->playlist()->setPlaybackMode(MusicPlaylist::PlaybackMode::Random);
+		music_player->setWindowIcon(QIcon(u8":/SystemAddonsPopup/icons/System Addons.ico"));
+		QObject::connect(music_player, &MusicPlayer::hiding, [&]() {
+			music_player_show_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_inactive.png"));
+			music_player_show_button->repaint();
+		});
 
-		music_player->play();
 	}
 	//RESIZE BAR INITIALIZATION
 	{
@@ -128,9 +158,18 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 
 		bookmarks_music_layout->setMargin(0);
 		bookmarks_music_layout->setSpacing(0);
+		bookmarks_music_layout->setAlignment(Qt::AlignmentFlag::AlignLeft);
 
-		bookmarks_music_layout->addWidget(management_container_widget,7);
-		bookmarks_music_layout->addWidget(music_player,3);
+		bookmarks_music_layout->addWidget(management_container_widget);
+
+		music_player_show_button_layout = new QVBoxLayout;
+		music_player_show_button_layout->setMargin(5);
+		music_player_show_button_layout->setAlignment(Qt::AlignmentFlag::AlignHCenter | Qt::AlignmentFlag::AlignTop);
+		music_player_show_button_layout->addWidget(music_player_show_button);
+		music_player_color_filler->setLayout(music_player_show_button_layout);
+
+		bookmarks_music_layout->addWidget(music_player_separator);
+		bookmarks_music_layout->addWidget(music_player_color_filler);
 
 		root_layout = new QVBoxLayout();
 
@@ -183,6 +222,11 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 					}
 				}
 			}
+			if (music_player->isVisible()) {
+				if (music_player->geometry().contains(QCursor::pos())) {
+					QApplication::setOverrideCursor(Qt::ArrowCursor);
+				}
+			}
 		});
 
 		mouse_pos_check_timer->start(100);
@@ -190,7 +234,7 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 	//SYSTEM TRAY ICON AND CONTEXT MENU INITIALIZATION
 	{
 		system_tray_icon = new QSystemTrayIcon(this);
-		system_tray_icon->setIcon(QIcon(u8"System Addons.ico"));
+		system_tray_icon->setIcon(QIcon(u8":/SystemAddonsPopup/icons/System Addons.ico"));
 		QObject::connect(system_tray_icon, &QSystemTrayIcon::activated, [&](QSystemTrayIcon::ActivationReason reason) {
 			QApplication::setOverrideCursor(Qt::ArrowCursor);
 			if (reason == QSystemTrayIcon::ActivationReason::DoubleClick) {
@@ -230,7 +274,7 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 
 void SystemAddonsPopup::mousePressEvent(QMouseEvent * event)
 {
-	if (resize_bar_widget->geometry().adjusted(0, 2 + this->size().height() - this->size().height()*percent_shown, 0, 0).contains(event->pos())) {
+	if (resize_bar_widget->geometry().adjusted(0, 2, 0, 0).contains(event->pos())) {
 		is_resized = true;
 		QApplication::setOverrideCursor(Qt::CursorShape::SizeVerCursor);
 	}

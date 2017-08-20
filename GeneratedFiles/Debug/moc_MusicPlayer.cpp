@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MusicPlayer_t {
-    QByteArrayData data[26];
-    char stringdata0[258];
+    QByteArrayData data[27];
+    char stringdata0[270];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -40,32 +40,34 @@ QT_MOC_LITERAL(5, 51, 5), // "muted"
 QT_MOC_LITERAL(6, 57, 13), // "volumeChanged"
 QT_MOC_LITERAL(7, 71, 6), // "volume"
 QT_MOC_LITERAL(8, 78, 12), // "stateChanged"
-QT_MOC_LITERAL(9, 91, 5), // "State"
-QT_MOC_LITERAL(10, 97, 5), // "state"
-QT_MOC_LITERAL(11, 103, 15), // "durationChanged"
-QT_MOC_LITERAL(12, 119, 8), // "duration"
-QT_MOC_LITERAL(13, 128, 19), // "currentMusicChanged"
-QT_MOC_LITERAL(14, 148, 12), // "currentMusic"
-QT_MOC_LITERAL(15, 161, 5), // "index"
-QT_MOC_LITERAL(16, 167, 13), // "loadingFailed"
-QT_MOC_LITERAL(17, 181, 5), // "music"
-QT_MOC_LITERAL(18, 187, 10), // "musicAdded"
-QT_MOC_LITERAL(19, 198, 12), // "musicRemoved"
-QT_MOC_LITERAL(20, 211, 5), // "pause"
-QT_MOC_LITERAL(21, 217, 4), // "play"
-QT_MOC_LITERAL(22, 222, 8), // "setMuted"
-QT_MOC_LITERAL(23, 231, 11), // "setPosition"
-QT_MOC_LITERAL(24, 243, 9), // "setVolume"
-QT_MOC_LITERAL(25, 253, 4) // "stop"
+QT_MOC_LITERAL(9, 91, 10), // "MusicState"
+QT_MOC_LITERAL(10, 102, 5), // "state"
+QT_MOC_LITERAL(11, 108, 15), // "durationChanged"
+QT_MOC_LITERAL(12, 124, 8), // "duration"
+QT_MOC_LITERAL(13, 133, 19), // "currentMusicChanged"
+QT_MOC_LITERAL(14, 153, 12), // "currentMusic"
+QT_MOC_LITERAL(15, 166, 5), // "index"
+QT_MOC_LITERAL(16, 172, 13), // "loadingFailed"
+QT_MOC_LITERAL(17, 186, 5), // "music"
+QT_MOC_LITERAL(18, 192, 10), // "musicAdded"
+QT_MOC_LITERAL(19, 203, 12), // "musicRemoved"
+QT_MOC_LITERAL(20, 216, 6), // "hiding"
+QT_MOC_LITERAL(21, 223, 5), // "pause"
+QT_MOC_LITERAL(22, 229, 4), // "play"
+QT_MOC_LITERAL(23, 234, 8), // "setMuted"
+QT_MOC_LITERAL(24, 243, 11), // "setPosition"
+QT_MOC_LITERAL(25, 255, 9), // "setVolume"
+QT_MOC_LITERAL(26, 265, 4) // "stop"
 
     },
     "MusicPlayer\0positionChanged\0\0position\0"
     "mutedChanged\0muted\0volumeChanged\0"
-    "volume\0stateChanged\0State\0state\0"
+    "volume\0stateChanged\0MusicState\0state\0"
     "durationChanged\0duration\0currentMusicChanged\0"
     "currentMusic\0index\0loadingFailed\0music\0"
-    "musicAdded\0musicRemoved\0pause\0play\0"
-    "setMuted\0setPosition\0setVolume\0stop"
+    "musicAdded\0musicRemoved\0hiding\0pause\0"
+    "play\0setMuted\0setPosition\0setVolume\0"
+    "stop"
 };
 #undef QT_MOC_LITERAL
 
@@ -75,34 +77,35 @@ static const uint qt_meta_data_MusicPlayer[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      18,   14, // methods
+      19,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-      10,       // signalCount
+      11,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,  104,    2, 0x06 /* Public */,
-       4,    1,  107,    2, 0x06 /* Public */,
-       6,    1,  110,    2, 0x06 /* Public */,
-       8,    1,  113,    2, 0x06 /* Public */,
-      11,    1,  116,    2, 0x06 /* Public */,
-      13,    1,  119,    2, 0x06 /* Public */,
-      13,    1,  122,    2, 0x06 /* Public */,
-      16,    1,  125,    2, 0x06 /* Public */,
-      18,    0,  128,    2, 0x06 /* Public */,
-      19,    0,  129,    2, 0x06 /* Public */,
+       1,    1,  109,    2, 0x06 /* Public */,
+       4,    1,  112,    2, 0x06 /* Public */,
+       6,    1,  115,    2, 0x06 /* Public */,
+       8,    1,  118,    2, 0x06 /* Public */,
+      11,    1,  121,    2, 0x06 /* Public */,
+      13,    1,  124,    2, 0x06 /* Public */,
+      13,    1,  127,    2, 0x06 /* Public */,
+      16,    1,  130,    2, 0x06 /* Public */,
+      18,    0,  133,    2, 0x06 /* Public */,
+      19,    0,  134,    2, 0x06 /* Public */,
+      20,    0,  135,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      20,    1,  130,    2, 0x0a /* Public */,
-      21,    0,  133,    2, 0x0a /* Public */,
-      21,    1,  134,    2, 0x0a /* Public */,
-      21,    1,  137,    2, 0x0a /* Public */,
+      21,    1,  136,    2, 0x0a /* Public */,
+      22,    0,  139,    2, 0x0a /* Public */,
       22,    1,  140,    2, 0x0a /* Public */,
-      23,    1,  143,    2, 0x0a /* Public */,
-      24,    1,  146,    2, 0x0a /* Public */,
-      25,    0,  149,    2, 0x0a /* Public */,
+      22,    1,  143,    2, 0x0a /* Public */,
+      23,    1,  146,    2, 0x0a /* Public */,
+      24,    1,  149,    2, 0x0a /* Public */,
+      25,    1,  152,    2, 0x0a /* Public */,
+      26,    0,  155,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::UInt,    3,
@@ -115,9 +118,10 @@ static const uint qt_meta_data_MusicPlayer[] = {
     QMetaType::Void, QMetaType::QString,   17,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::Bool,   20,
+    QMetaType::Void, QMetaType::Bool,   21,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,   15,
     QMetaType::Void, QMetaType::QString,   17,
@@ -138,21 +142,22 @@ void MusicPlayer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 0: _t->positionChanged((*reinterpret_cast< uint(*)>(_a[1]))); break;
         case 1: _t->mutedChanged((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 2: _t->volumeChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 3: _t->stateChanged((*reinterpret_cast< State(*)>(_a[1]))); break;
+        case 3: _t->stateChanged((*reinterpret_cast< MusicState(*)>(_a[1]))); break;
         case 4: _t->durationChanged((*reinterpret_cast< uint(*)>(_a[1]))); break;
         case 5: _t->currentMusicChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 6: _t->currentMusicChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 7: _t->loadingFailed((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 8: _t->musicAdded(); break;
         case 9: _t->musicRemoved(); break;
-        case 10: _t->pause((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 11: _t->play(); break;
-        case 12: _t->play((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 13: _t->play((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 14: _t->setMuted((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 15: _t->setPosition((*reinterpret_cast< uint(*)>(_a[1]))); break;
-        case 16: _t->setVolume((*reinterpret_cast< float(*)>(_a[1]))); break;
-        case 17: _t->stop(); break;
+        case 10: _t->hiding(); break;
+        case 11: _t->pause((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 12: _t->play(); break;
+        case 13: _t->play((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 14: _t->play((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 15: _t->setMuted((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 16: _t->setPosition((*reinterpret_cast< uint(*)>(_a[1]))); break;
+        case 17: _t->setVolume((*reinterpret_cast< float(*)>(_a[1]))); break;
+        case 18: _t->stop(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -180,7 +185,7 @@ void MusicPlayer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
             }
         }
         {
-            typedef void (MusicPlayer::*_t)(State );
+            typedef void (MusicPlayer::*_t)(MusicState );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&MusicPlayer::stateChanged)) {
                 *result = 3;
                 return;
@@ -228,6 +233,13 @@ void MusicPlayer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
                 return;
             }
         }
+        {
+            typedef void (MusicPlayer::*_t)();
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&MusicPlayer::hiding)) {
+                *result = 10;
+                return;
+            }
+        }
     }
 }
 
@@ -256,13 +268,13 @@ int MusicPlayer::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 18)
+        if (_id < 19)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 18;
+        _id -= 19;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 18)
+        if (_id < 19)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 18;
+        _id -= 19;
     }
     return _id;
 }
@@ -289,7 +301,7 @@ void MusicPlayer::volumeChanged(int _t1)
 }
 
 // SIGNAL 3
-void MusicPlayer::stateChanged(State _t1)
+void MusicPlayer::stateChanged(MusicState _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
@@ -333,6 +345,12 @@ void MusicPlayer::musicAdded()
 void MusicPlayer::musicRemoved()
 {
     QMetaObject::activate(this, &staticMetaObject, 9, nullptr);
+}
+
+// SIGNAL 10
+void MusicPlayer::hiding()
+{
+    QMetaObject::activate(this, &staticMetaObject, 10, nullptr);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

@@ -9,6 +9,7 @@ class BookmarksManager : public QWidget {
 	Q_OBJECT
 
 	friend class SystemAddonsPopup;
+	friend class MusicPlayer;
 public:
 	static BookmarksManager* getInstance();
 private:

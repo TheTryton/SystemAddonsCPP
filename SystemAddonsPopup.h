@@ -13,7 +13,6 @@ class SystemAddonsPopup : public QWidget
 {
 	Q_OBJECT
 	Q_PROPERTY(float showPercent READ showPercent WRITE setShowPercent)
-	friend class MusicPlayer;
 public:
 	static SystemAddonsPopup* getInstance();
 
@@ -58,6 +57,10 @@ private:
 	//MUSIC PLAYER
 	MusicPlayer* music_player = NULL;
 	MusicPlaylist* music_player_playlist = NULL;
+	QFrame* music_player_separator = NULL;
+	QWidget* music_player_color_filler = NULL;
+	QVBoxLayout* music_player_show_button_layout = NULL;
+	QPushButton* music_player_show_button = NULL;
 signals:
 	void showSignal();
 	void hideSignal();

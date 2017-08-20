@@ -7,6 +7,7 @@
 #include "MusicPlaylist.h"
 #include "MusicVisualiser.h"
 #include "MusicSlider.h"
+#include "MusicPlaylistWidget.h"
 
 #include "DataManager.h"
 
@@ -27,7 +28,7 @@ private:
 private:
 	void init();
 public:
-	enum class State {
+	enum class MusicState {
 		StoppedState,
 		PlayingState,
 		PausedState
@@ -38,7 +39,6 @@ public:
 	MusicVisualiser* visualiser();
 
 	MusicPlaylist* playlist();
-	void setPlaylist(MusicPlaylist* playlist);
 
 	bool addMusic(const QString& music);
 	bool addMusic(const QList<QString>& music);
@@ -52,7 +52,7 @@ public:
 	bool isMuted();
 	uint position();
 	float volume();
-	State state();
+	MusicState state();
 public slots:
 	void pause(bool pause);
 	void play();
@@ -66,21 +66,26 @@ signals:
 	void positionChanged(uint position);
 	void mutedChanged(bool muted);
 	void volumeChanged(int volume);
-	void stateChanged(State state);
+	void stateChanged(MusicState	 state);
 	void durationChanged(uint duration);
 	void currentMusicChanged(const QString& currentMusic);
 	void currentMusicChanged(int index);
 	void loadingFailed(const QString&  music);
 	void musicAdded();
 	void musicRemoved();
+
+	void hiding();
 protected:
-	void resizeEvent(QResizeEvent *event) override;
-	void dragEnterEvent(QDragEnterEvent* event) override;
-	void dropEvent(QDropEvent* event) override;
+	virtual void dragEnterEvent(QDragEnterEvent* event) override;
+	virtual void dropEvent(QDropEvent* event) override;
+
+	virtual void closeEvent(QCloseEvent* event) override;
 private:
 	FMOD::System* m_MusicSystem = NULL;
 	FMOD::ChannelGroup* m_MainChannelGroup = NULL;
 	FMOD::Channel* m_MainChannel = NULL;
+
+	bool m_ShouldStop = false;
 
 	MusicPlaylist* m_MusicPlaylist = NULL;
 private:

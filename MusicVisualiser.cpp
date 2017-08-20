@@ -70,7 +70,7 @@ void MusicVisualiser::paintEvent(QPaintEvent * event)
 			}
 		}
 		else {
-			if (parent_music_player->state() != MusicPlayer::State::PausedState) {
+			if (parent_music_player->state() != MusicPlayer::MusicState::PausedState) {
 				for (auto& visualiserItem : m_VisualiserItems)
 				{
 					visualiserItem.first.update(deltaTime, FFT->spectrum[0][visualiserItem.second], volume);
@@ -84,7 +84,7 @@ void MusicVisualiser::paintEvent(QPaintEvent * event)
 		}
 	}
 	else {
-		if (parent_music_player->state() != MusicPlayer::State::PausedState) {
+		if (parent_music_player->state() != MusicPlayer::MusicState::PausedState) {
 			for (auto& visualiserItem : m_VisualiserItems)
 			{
 				visualiserItem.first.update(deltaTime, 0, deltaTime);
