@@ -18,5 +18,10 @@
         <file>icons/System Addons.ico</file>
         <file>icons/music_active.png</file>
         <file>icons/music_inactive.png</file>
+        <file>icons/music_control/audio_25.png</file>
+        <file>icons/music_control/audio_50.png</file>
+        <file>icons/music_control/audio_75.png</file>
+        <file>icons/music_control/audio_100.png</file>
+        <file>icons/music_control/audio_muted.png</file>
     </qresource>
 </RCC>

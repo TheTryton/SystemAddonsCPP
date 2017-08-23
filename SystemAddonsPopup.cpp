@@ -107,7 +107,7 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 		music_player_separator->setFixedWidth(4);
 
 		music_player_show_button = new QPushButton;
-		music_player_show_button->setFixedSize(60, 60);
+		music_player_show_button->setFixedSize(QSize(60, 60));
 		music_player_show_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_inactive.png"));
 		music_player_show_button->setIconSize(QSize(56, 56));
 		music_player_show_button->setFlat(true);
@@ -129,7 +129,6 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 
 		music_player = MusicPlayer::getInstance();
 		music_player->attachVisualiser();
-		music_player->playlist()->setPlaybackMode(MusicPlaylist::PlaybackMode::Random);
 		music_player->setWindowIcon(QIcon(u8":/SystemAddonsPopup/icons/System Addons.ico"));
 		QObject::connect(music_player, &MusicPlayer::hiding, [&]() {
 			music_player_show_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_inactive.png"));
@@ -259,7 +258,7 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 
 			QAction* exit = new QAction(u8"Exit", this);
 			QObject::connect(exit, &QAction::triggered, [&](bool checked) {
-				QApplication::exit();
+				this->close();
 			});
 			system_tray_icon_context_menu->addAction(exit);
 		}
@@ -301,6 +300,12 @@ void SystemAddonsPopup::mouseReleaseEvent(QMouseEvent * event)
 		QApplication::setOverrideCursor(Qt::CursorShape::ArrowCursor);
 		is_resized = false;
 	}
+}
+
+void SystemAddonsPopup::closeEvent(QCloseEvent * event)
+{
+	system_tray_icon->hide();
+	QApplication::quit();
 }
 
 SystemAddonsPopup* SystemAddonsPopup::getInstance() {

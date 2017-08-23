@@ -218,6 +218,7 @@ int MusicPlaylist::nextIndex(int steps)
 				m_CurrentIndex = -1;
 				break;
 			case PlaybackMode::CurrentItemInLoop:
+				m_CurrentIndex = (m_CurrentIndex + 1) % m_MusicData.size();
 				break;
 			case PlaybackMode::Sequential:
 			default:
@@ -260,6 +261,8 @@ int MusicPlaylist::previousIndex(int steps)
 			case PlaybackMode::CurrentItemOnce:
 				break;
 			case PlaybackMode::CurrentItemInLoop:
+				m_CurrentIndex = (m_CurrentIndex - 1) % m_MusicData.size();
+				if (m_CurrentIndex < 0)m_CurrentIndex += m_MusicData.size();
 				break;
 			case PlaybackMode::Sequential:
 			default:
@@ -363,6 +366,7 @@ void MusicPlaylist::next()
 			m_CurrentIndex = -1;
 			break;
 		case PlaybackMode::CurrentItemInLoop:
+			m_CurrentIndex = (m_CurrentIndex + 1) % m_MusicData.size();
 			break;
 		case PlaybackMode::Sequential:
 		default:
@@ -396,6 +400,8 @@ void MusicPlaylist::previous()
 		case PlaybackMode::CurrentItemOnce:
 			break;
 		case PlaybackMode::CurrentItemInLoop:
+			m_CurrentIndex = (m_CurrentIndex - 1) % m_MusicData.size();
+			if (m_CurrentIndex < 0)m_CurrentIndex += m_MusicData.size();
 			break;
 		case PlaybackMode::Sequential:
 		default:

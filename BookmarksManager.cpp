@@ -159,7 +159,7 @@ void BookmarksManager::mousePressEvent(QMouseEvent * event)
 {
 	QSize item_size = data_manager->getPreferredBookmarkSize();
 	QSize item_spacing = data_manager->getSpacingBetweenBookmarks();
-	int item_count_horz = qCeil((float)(this->size().width() - item_spacing.width()) / (float)(item_size.width() + item_spacing.width()));
+	int item_count_horz = qRound((float)(this->size().width() - item_spacing.width()) / (float)(item_size.width() + item_spacing.width()));
 	int item_count_vert = qCeil((float)(this->size().height() - item_spacing.height()) / (float)(item_size.height() + item_spacing.height()));
 	QSize item_grid_size = QSize(item_count_horz, item_count_vert);
 	QList<BookmarkItem>* bookmark_items = data_manager->getBookmarkItems();
@@ -332,7 +332,7 @@ void BookmarksManager::mouseMoveEvent(QMouseEvent * event)
 {
 	QSize item_size = data_manager->getPreferredBookmarkSize();
 	QSize item_spacing = data_manager->getSpacingBetweenBookmarks();
-	int item_count_horz = qCeil((float)(this->size().width() - item_spacing.width()) / (float)(item_size.width() + item_spacing.width()));
+	int item_count_horz = qRound((float)(this->size().width() - item_spacing.width()) / (float)(item_size.width() + item_spacing.width()));
 	int item_count_vert = qCeil((float)(this->size().height() - item_spacing.height()) / (float)(item_size.height() + item_spacing.height()));
 	QSize item_grid_size = QSize(item_count_horz, item_count_vert);
 	QList<BookmarkItem>* bookmark_items = data_manager->getBookmarkItems();
@@ -359,7 +359,7 @@ void BookmarksManager::mouseDoubleClickEvent(QMouseEvent * event)
 {
 	QSize item_size = data_manager->getPreferredBookmarkSize();
 	QSize item_spacing = data_manager->getSpacingBetweenBookmarks();
-	int item_count_horz = qCeil((float)(this->size().width() - item_spacing.width()) / (float)(item_size.width() + item_spacing.width()));
+	int item_count_horz = qRound((float)(this->size().width() - item_spacing.width()) / (float)(item_size.width() + item_spacing.width()));
 	int item_count_vert = qCeil((float)(this->size().height() - item_spacing.height()) / (float)(item_size.height() + item_spacing.height()));
 	QSize item_grid_size = QSize(item_count_horz, item_count_vert);
 	QList<BookmarkItem>* bookmark_items = data_manager->getBookmarkItems();
@@ -387,8 +387,8 @@ void BookmarksManager::paintEvent(QPaintEvent * event)
 
 	QSize item_size = data_manager->getPreferredBookmarkSize();
 	QSize item_spacing = data_manager->getSpacingBetweenBookmarks();
-	int item_count_horz = qFloor((float)(this->size().width() - item_spacing.width()) / (float)(item_size.width() + item_spacing.width()));
-	int item_count_vert = qFloor((float)(this->size().height() - item_spacing.height()) / (float)(item_size.height() + item_spacing.height()));
+	int item_count_horz = qRound((float)(this->size().width() - item_spacing.width()) / (float)(item_size.width() + item_spacing.width()));
+	int item_count_vert = qCeil((float)(this->size().height() - item_spacing.height()) / (float)(item_size.height() + item_spacing.height()));
 	QSize item_grid_size = QSize(item_count_horz, item_count_vert);
 	QList<BookmarkItem>* bookmark_items = data_manager->getBookmarkItems();
 
