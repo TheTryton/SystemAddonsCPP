@@ -1,12 +1,10 @@
 #include "SystemAddonsPopup.h"
 
 #include "DataManager.h"
-#include "NetworkManager.h"
 
 #include <QSharedMemory>
 #include <QApplication>
 #include <QMouseEvent>
-#include <QDesktopWidget>
 #include <QScreen>
 #include <QPropertyAnimation>
 #include <QSignalTransition>
@@ -26,8 +24,6 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 {
 	QSize selected_screen_size;
 
-	NetworkManager::getInstance()->startScanning();
-	
 	//DATA MANAGER INITIALIZATION
 	{
 		data_manager = DataManager::getInstance();
@@ -52,7 +48,7 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 		this->setMaximumHeight(selected_screen_size.height() / 2);
 
 		this->setGeometry(QRect(QPoint(0, 0), QSize(selected_screen_size.width(), selected_screen_size.height() / 9)));
-		this->setWindowIcon(QIcon(u8":/SystemAddonsPopup/icons/System Addons.ico"));
+		this->setWindowIcon(QIcon(u8":/SystemAddonsPopup/icons/System Addons.png"));
 	}
 	//DOCUMENT MANAGER INITIALIZATION
 	{
@@ -102,7 +98,7 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 		music_player_separator->setFrameShape(QFrame::Shape::VLine);
 		music_player_separator->setStyleSheet(""
 			"QFrame{"
-			"	border: 2px solid white"
+			"	border: 2px solid #B0C4DE"
 			"}");
 		music_player_separator->setFixedWidth(4);
 
@@ -115,13 +111,11 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 			if (music_player->isVisible()) 
 			{
 				music_player_show_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_inactive.png"));
-				music_player->stop();
 				music_player->hide();
 			}
 			else
 			{
 				music_player_show_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_active.png"));
-				music_player->play();
 				music_player->show();
 				music_player->repaint();
 			}
@@ -129,11 +123,17 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 
 		music_player = MusicPlayer::getInstance();
 		music_player->attachVisualiser();
-		music_player->setWindowIcon(QIcon(u8":/SystemAddonsPopup/icons/System Addons.ico"));
+		music_player->setWindowIcon(QIcon(u8":/SystemAddonsPopup/icons/System Addons.png"));
+		music_player->setMinimumSize(QSize(900, 480));
 		QObject::connect(music_player, &MusicPlayer::hiding, [&]() {
 			music_player_show_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_inactive.png"));
 			music_player_show_button->repaint();
 		});
+		QObject::connect(music_player, &MusicPlayer::showing, [&]() {
+			music_player_show_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_active.png"));
+			music_player_show_button->repaint();
+		});
+		music_player->pause(true);
 
 	}
 	//RESIZE BAR INITIALIZATION
@@ -233,7 +233,7 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 	//SYSTEM TRAY ICON AND CONTEXT MENU INITIALIZATION
 	{
 		system_tray_icon = new QSystemTrayIcon(this);
-		system_tray_icon->setIcon(QIcon(u8":/SystemAddonsPopup/icons/System Addons.ico"));
+		system_tray_icon->setIcon(QIcon(u8":/SystemAddonsPopup/icons/System Addons.png"));
 		QObject::connect(system_tray_icon, &QSystemTrayIcon::activated, [&](QSystemTrayIcon::ActivationReason reason) {
 			QApplication::setOverrideCursor(Qt::ArrowCursor);
 			if (reason == QSystemTrayIcon::ActivationReason::DoubleClick) {

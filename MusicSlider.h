@@ -1,7 +1,6 @@
 #pragma once
 
-#include <QSlider>
-#include <QMouseEvent>
+#include <QtWidgets>
 
 class MusicSlider : public QSlider
 {

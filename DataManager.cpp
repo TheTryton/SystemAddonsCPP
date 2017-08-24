@@ -6,7 +6,6 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QFileInfo>
-#include <QNetworkInterface>
 
 DataManager* DataManager::instance = NULL;
 
@@ -48,8 +47,8 @@ bool DataManager::saveData(QString filename, bool save_as_binary)
 		QJsonArray bookmarks_data;
 		for (int i = 0; i < this->bookmark_items.size(); i++) {
 			QJsonObject bookmark_object;
-			bookmark_object["internet_name"] = this->bookmark_items[i].getInternetName();
-			bookmark_object["synchronize_over_internet"] = this->bookmark_items[i].getSynchronizeOverInternet();
+			//bookmark_object["internet_name"] = this->bookmark_items[i].getInternetName();
+			//bookmark_object["synchronize_over_internet"] = this->bookmark_items[i].getSynchronizeOverInternet();
 
 			bookmark_object["visible_name"] = this->bookmark_items[i].getVisibleName();
 			bookmark_object["local_file_name"] = this->bookmark_items[i].getLocalFilename();
@@ -60,11 +59,16 @@ bool DataManager::saveData(QString filename, bool save_as_binary)
 	}
 	//PLAYLIST DATA
 	{
-		QJsonArray playlist_data;
-		for (int i = 0; i < this->playlist.size(); i++) {
-			playlist_data.append(this->playlist[i]);
+		QJsonObject music_player_data;
+		{
+			QJsonArray playlist_data;
+			for (int i = 0; i < this->playlist.size(); i++) {
+				playlist_data.append(this->playlist[i]);
+			}
+			music_player_data["playlist_data"] = playlist_data;
+			music_player_data["music_volume"] = popup_configuration_data["music_volume"].toDouble();
 		}
-		root_data_object["playlist_data"] = playlist_data;
+		root_data_object["music_player_data"] = music_player_data;
 	}
 	QJsonDocument save_document(root_data_object);
 	save_file.write(save_as_binary ? save_document.toBinaryData() : save_document.toJson());
@@ -130,11 +134,9 @@ bool DataManager::loadData(QString filename, bool load_as_binary)
 				for (int i = 0; i < bookmarks_data.size(); i++) {
 					if (bookmarks_data[i].isObject()) {
 						QJsonObject bookmark_item = bookmarks_data[i].toObject();
-						if (bookmark_item.contains("internet_name") && bookmark_item.contains("synchronize_over_internet") &&
-							bookmark_item.contains("visible_name") && bookmark_item.contains("local_file_name") &&
+						if (bookmark_item.contains("visible_name") && bookmark_item.contains("local_file_name") &&
 							bookmark_item.contains("visible_image_file_name")) {
-							if (bookmark_item["internet_name"].isString() && bookmark_item["synchronize_over_internet"].isBool() &&
-								bookmark_item["visible_name"].isString() && bookmark_item["local_file_name"].isString() &&
+							if (bookmark_item["visible_name"].isString() && bookmark_item["local_file_name"].isString() &&
 								bookmark_item["visible_image_file_name"].isString()) {
 								QFileInfo bookmark_file_info;
 								bookmark_file_info.setFile(bookmark_item["local_file_name"].toString());
@@ -161,7 +163,7 @@ bool DataManager::loadData(QString filename, bool load_as_binary)
 										else item->setVisibleImageAsDefaultFileIcon(this->getPreferredBookmarkImageSize());
 									}
 									else item->setVisibleImageAsDefaultFileIcon(this->getPreferredBookmarkImageSize());
-									//NETWORK
+									/*//NETWORK
 									if (bookmark_item["synchronize_over_internet"].toBool()) {
 										if (bookmark_item["internet_name"].toString() != "") {
 											if (this->registerInternetName(bookmark_item["internet_name"].toString())) {
@@ -181,7 +183,7 @@ bool DataManager::loadData(QString filename, bool load_as_binary)
 									else {
 										item->setInternetName("");
 										item->setSynchronizeOverInternet(false);
-									}
+									}*/
 									
 									this->bookmark_items.push_back(*item);
 								}
@@ -194,13 +196,23 @@ bool DataManager::loadData(QString filename, bool load_as_binary)
 			}
 		}
 		//PLAYLIST DATA
-		if (root_data_object.contains("playlist_data")) {
-			this->playlist.clear();
-			if (root_data_object["playlist_data"].isArray()) {
-				QJsonArray playlist_data = root_data_object["playlist_data"].toArray();
-				for (int i = 0; i < playlist_data.size(); i++) {
-					if (playlist_data[i].isString()) {
-						playlist.append(playlist_data[i].toString());
+		if (root_data_object.contains("music_player_data")) {
+			if (root_data_object["music_player_data"].isObject()) {
+				QJsonObject music_player_data = root_data_object["music_player_data"].toObject();
+				if (music_player_data.contains("playlist_data")) {
+					if (music_player_data["playlist_data"].isArray()) {
+						this->playlist.clear();
+						QJsonArray playlist_data = music_player_data["playlist_data"].toArray();
+						for (int i = 0; i < playlist_data.size(); i++) {
+							if (playlist_data[i].isString()) {
+								playlist.append(playlist_data[i].toString());
+							}
+						}
+					}
+				}
+				if (music_player_data.contains("music_volume")) {
+					if (music_player_data["music_volume"].isDouble()) {
+						popup_configuration_data["music_volume"] = qMax(0.0, qMin(1.0, music_player_data["music_volume"].toDouble()));
 					}
 				}
 			}
@@ -220,6 +232,17 @@ QList<QString> DataManager::getPlaylist()
 void DataManager::setPlaylist(QList<QString> playlist)
 {
 	this->playlist = playlist;
+}
+
+double DataManager::getVolume()
+{
+	return popup_configuration_data["music_volume"].toDouble();
+}
+
+void DataManager::setVolume(double volume)
+{
+	volume = qMax(0.0, qMin(1.0, volume));
+	popup_configuration_data["music_volume"] = volume;
 }
 
 QColor DataManager::getBackgroundColor()
@@ -292,7 +315,7 @@ QList<BookmarkItem>* DataManager::getBookmarkItems()
 void DataManager::removeBookmark(int index)
 {
 	if (index >= 0 && index < bookmark_items.size()) {
-		if (bookmark_items[index].getSynchronizeOverInternet())unregisterInternetName(bookmark_items[index].getInternetName());
+		//if (bookmark_items[index].getSynchronizeOverInternet())unregisterInternetName(bookmark_items[index].getInternetName());
 		bookmark_items.erase(bookmark_items.begin() + index);
 	}
 }
@@ -314,8 +337,8 @@ const BookmarkItem * DataManager::addBookmark(QString filename)
 		item->setVisibleImageAsDefaultFileIcon(this->getPreferredBookmarkImageSize());
 
 		//NETWORK
-		item->setInternetName("");
-		item->setSynchronizeOverInternet(false);
+		//item->setInternetName("");
+		//item->setSynchronizeOverInternet(false);
 
 		this->bookmark_items.push_back(*item);
 		return item;
@@ -323,6 +346,7 @@ const BookmarkItem * DataManager::addBookmark(QString filename)
 	return NULL;
 }
 
+/*
 QList<InternetName>* DataManager::getInternetNames()
 {
 	return &internet_names;
@@ -415,6 +439,7 @@ QHostAddress DataManager::getLocalhostAddress()
 {
 	return local_host_address;
 }
+*/
 
 DataManager::DataManager(QObject *parent) : QObject(parent)
 {
@@ -425,12 +450,12 @@ DataManager::DataManager(QObject *parent) : QObject(parent)
 	popup_configuration_data["preferred_bookmark_size"] = QSize(90, 100);
 	popup_configuration_data["bookmark_spacing"] = QSize(5, 5);
 
-	foreach(const QHostAddress &address, QNetworkInterface::allAddresses()) {
+	/*foreach(const QHostAddress &address, QNetworkInterface::allAddresses()) {
 		if (address.protocol() == QAbstractSocket::IPv4Protocol && address != QHostAddress(QHostAddress::LocalHost)) {
 			local_host_address = address;
 			break;
 		}
-	}
+	}*/
 }
 
 DataManager::~DataManager()

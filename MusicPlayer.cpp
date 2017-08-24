@@ -31,7 +31,10 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 				music_visualiser = new MusicVisualiser(this);
 				music_visualiser->setVisible(false);
 
-				playlist_music_selector = new QListWidget;
+				playlist_separation_layout = new QHBoxLayout;
+				{
+					playlist_music_selector = new QListWidget;
+				}
 			}
 			bottom_layout = new QVBoxLayout;
 			{
@@ -56,9 +59,12 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 
 					separator_playlist_buttons_frame = new QFrame;
 
-					playlist_remove_button = new QPushButton;
 					playlist_clear_button = new QPushButton;
 					playlist_show_hide_button = new QPushButton;
+
+					separator_fullscreen_frame = new QFrame;
+
+					go_fullscreen_button = new QPushButton;
 				}
 			}
 
@@ -70,64 +76,114 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 		{
 			playlist_visualiser_layout->setMargin(0);
 			playlist_visualiser_layout->setSpacing(0);
+			playlist_visualiser_layout->setAlignment(Qt::AlignmentFlag::AlignRight);
 
-			playlist_visualiser_layout->addWidget(music_visualiser, 7);
+			music_visualiser->setParent(this);
+			music_visualiser->setAttribute(Qt::WA_TranslucentBackground);
+			music_visualiser->setWindowFlags(Qt::FramelessWindowHint);
+			music_visualiser->setStyleSheet(
+				"MusicVisualiser{"
+				"	background:transparent;"
+				"}");
+			music_visualiser->show();
 
-			playlist_visualiser_layout->addWidget(playlist_music_selector, 3);
-			playlist_music_selector->setMinimumWidth(200);
-			playlist_music_selector->setMaximumWidth(300);
-			playlist_music_selector->setStyleSheet(
-				"QListWidget {"
-				"	background:	qradialgradient(cx:0.5, cy:0.5, radius: 1,"
-				"				fx:0.5, fy : 0.5, stop : 0 white, stop : 1 green)"
-				"}"
-				"QListWidget::item:selected{"
-				"	background: 1px solid rgb(255,0,0);"
-				"}"/*
-
-				"QListWidget::item : selected : !active{"
-				"	background: qlineargradient(x1 : 0, y1 : 0, x2 : 0, y2 : 1,"
-				"								stop : 0 #ABAFE5, stop: 1 #8588B2);"
-				"}"
-
-				"QListWidget::item : selected : active{"
-				"	background: qlineargradient(x1 : 0, y1 : 0, x2 : 0, y2 : 1,"
-				"								stop : 0 #6a6ea9, stop: 1 #888dd9);"
-				"}"
-
-				"QListWidget::item : hover{"
-				"	background: qlineargradient(x1 : 0, y1 : 0, x2 : 0, y2 : 1,"
-				"	stop : 0 #FAFBFE, stop: 1 #DCDEF1);"
-				"}"*/);
-			void(QListWidget::*fun1)(int) = &QListWidget::currentRowChanged;
-			QObject::connect(playlist_music_selector, fun1, this, [&](int index) {
-				if (index != -1) {
-					if (this->currentMusicIndex() != index) {
-						this->play(index);
+			playlist_visualiser_layout->addLayout(playlist_separation_layout, 2);
+			{
+				playlist_separation_layout->setMargin(0);
+				playlist_separation_layout->setSpacing(0);
+				playlist_separation_layout->addWidget(playlist_music_selector);
+				playlist_separation_layout->setAlignment(Qt::AlignBottom);
+				playlist_music_selector->setMaximumWidth(300);
+				playlist_music_selector->setStyleSheet(
+					"QListWidget {"
+					"	background: transparent;"
+					"}"
+					"QListWidget::item:hover{"
+					"	background: qlineargradient(x1 : 0, y1 :0, x2 : 1, y2 : 0, stop : 0 #ADD8E6, stop:1 #87CEFA);"
+					"}"
+					"QListWidget::item:selected{"
+					"	background: qlineargradient(x1 : 0, y1 :0, x2 : 1, y2 : 0, stop : 0 #00BFFF, stop:1 #87CEFA);"
+					"}");
+					
+				void(QListWidget::*fun1)(int) = &QListWidget::currentRowChanged;
+				QObject::connect(playlist_music_selector, fun1, this, [&](int index) {
+					if (index != -1) {
+						if (this->currentMusicIndex() != index) {
+							this->play(index);
+						}
 					}
-				}
-				else {
-					playlist_music_selector->setCurrentRow(this->currentMusicIndex());
-				}
-			});
-			void(MusicPlayer::*fun2)(int) = &MusicPlayer::currentMusicChanged;
-			QObject::connect(this, fun2, [&](int index) {
-				playlist_music_selector->setCurrentRow(index);
-			});
+					else {
+						playlist_music_selector->setCurrentRow(this->currentMusicIndex());
+					}
+				});
+				void(MusicPlayer::*fun2)(int) = &MusicPlayer::currentMusicChanged;
+				QObject::connect(this, fun2, [&](int index) {
+					playlist_music_selector->setCurrentRow(index);
+				});
+				playlist_music_selector->setContextMenuPolicy(Qt::CustomContextMenu);
+				QObject::connect(playlist_music_selector, &QListWidget::customContextMenuRequested, this, [=](const QPoint& pos) {
+					QPoint globalPos = playlist_music_selector->mapToGlobal(pos);
+
+					QMenu myMenu;
+					myMenu.addAction("Remove Music", this, [=]() {
+						removeMusic(currentMusicIndex());
+					});
+					myMenu.exec(globalPos);
+				});
+			}
 		}
 		root_layout->addLayout(bottom_layout, 1);
 		{
+			QString sliders_stylesheet = ""
+				"QSlider{"
+				"	background: transparent;"
+				"}"
+				"QSlider::handle:horizontal{"
+				"	border-width: 1px;"
+				"	border-style: solid;"
+				"	border-color: #B0E0E6;"
+				"	border-radius: 2px;"
+				"	border-style: outset;"
+				"	width: 18px;"
+				"	height: 8px;"
+				"	margin: -4px 0;"
+				"	background-color: #F0F8FF"
+				"}"
+				"QSlider::handle:horizontal:hover{"
+				"	border-width: 1px;"
+				"	border-style: solid;"
+				"	border-color: #B0E0E6;"
+				"	border-radius: 2px;"
+				"	border-style: outset;"
+				"	width: 18px;"
+				"	height: 8px;"
+				"	margin: -4px 0;"
+				"	background-color: #E6E6FA"
+				"}"
+				"QSlider::handle:horizontal:pressed{"
+				"	border-width: 1px;"
+				"	border-style: solid;"
+				"	border-color: #B0E0E6;"
+				"	border-radius: 2px;"
+				"	border-style: outset;"
+				"	width: 18px;"
+				"	height: 8px;"
+				"	margin: -4px 0;"
+				"	background-color: #B0C4DE"
+				"}"
+				"QSlider::groove:horizontal{"
+				"	border: 1px solid #B0E0E6;"
+				"	height: 3px;"
+				"	position: absolute;"
+				"	background: qlineargradient(x1 : 0, y1 : 0, x2 : 1, y2 : 0, stop : 0 #B0C4DE, stop:1 #E6E6FA);"
+				"	margin: 2px 0;"
+				"}";
+
 			bottom_layout->addWidget(position_slider);
 			position_slider->setOrientation(Qt::Orientation::Horizontal);
 			position_slider->setMinimum(0);
 			position_slider->setMaximum(0);
-			position_slider->setStyleSheet(
-				"QSlider::right-arrow:horizontal, QSlider::left-arrow:horizontal {"
-				"	border: none;"
-				"	background: none;"
-				"	color: none;"
-				"}"
-			);
+			position_slider->setStyleSheet(sliders_stylesheet);
 			QObject::connect(position_slider, &QSlider::valueChanged, [&](int value) {
 				if (qAbs(position() - value) > 100)this->setPosition(value);
 			});
@@ -152,7 +208,7 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 					"QPushButton{"
 					"	border-width: 2px;"
 					"	border-style: solid;"
-					"	border-color: #8e008e;"
+					"	border-color: #999999;"
 					"	border-radius: 12px;"
 					"	border-style: outset;"
 					"	background-color: #ffffff"
@@ -160,7 +216,7 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 					"QPushButton:hover{"
 					"	border-width: 2px;"
 					"	border-style: solid;"
-					"	border-color: #8e008e;"
+					"	border-color: #999999;"
 					"	border-radius: 12px;"
 					"	border-style: outset;"
 					"	background-color: #dddddd"
@@ -168,7 +224,7 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 					"QPushButton:pressed{"
 					"	border-width: 2px;"
 					"	border-style: solid;"
-					"	border-color: #8e008e;"
+					"	border-color: #999999;"
 					"	border-radius: 12px;"
 					"	border-style: inset;"
 					"	background-color: #cccccc"
@@ -287,8 +343,8 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 					});
 
 					buttons_layout->addWidget(play_pause_button);
-					play_pause_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_control/pause.png"));
-					play_pause_button->setProperty("active", 1);
+					play_pause_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_control/play.png"));
+					play_pause_button->setProperty("active", 0);
 					play_pause_button->setFixedSize(64, 64);
 					play_pause_button->setIconSize(QSize(52, 52));
 					play_pause_button->setFlat(true);
@@ -351,31 +407,33 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 					volume_mute_button->setIconSize(QSize(52, 36));
 					volume_mute_button->setFlat(true);
 					volume_mute_button->setStyleSheet(buttons_stylesheet);
-					volume_mute_button->setProperty("active", false);
+					volume_mute_button->setProperty("active", false);	
 					QObject::connect(volume_mute_button, &QPushButton::released, [&]() {
-						if (m_MusicPlaylist) {
-							if (volume_mute_button->property("active").toBool()) {
-								volume_slider->setMaximum(1000);
-								volume_slider->setValue(m_SaveVolume*1000);
-								setMuted(false);
-								volume_mute_button->setProperty("active", false);
-							}
-							else {
-								volume_mute_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_control/audio_muted.png"));
-								m_SaveVolume = volume();
-								volume_slider->setMaximum(0);
-								volume_slider->setValue(0);
-								setMuted(true);
-								volume_mute_button->setProperty("active", true);
-							}
-							
+						if (volume_mute_button->property("active").toBool()) {
+							volume_slider->setValue(m_SaveVolume * 1000);
+							setMuted(false);
+							volume_mute_button->setProperty("active", false);
+						}
+						else {
+							volume_mute_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_control/audio_muted.png"));
+							m_SaveVolume = volume();
+							volume_slider->setValue(0);
+							setMuted(true);
+							volume_mute_button->setProperty("active", true);
 						}
 					});
 
 					buttons_layout->addWidget(volume_slider);
 					volume_slider->setOrientation(Qt::Orientation::Horizontal);
 					QObject::connect(volume_slider, &MusicSlider::valueChanged, [=](int value) {
+						if (volume_mute_button->property("active").toBool()) {
+							setMuted(false);
+							volume_mute_button->setProperty("active", false);
+						}
+						
 						setVolume(value / 1000.0);
+						data_manager->setVolume(value / 1000.0);
+						data_manager->saveData();
 						if (value > 750) {
 							volume_mute_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_control/audio_100.png"));
 						}
@@ -395,14 +453,8 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 					volume_slider->setMinimum(0);
 					volume_slider->setMaximum(1000);
 					volume_slider->setMaximumWidth(100);
-					volume_slider->setValue(volume()*volume_slider->maximum());
-					volume_slider->setStyleSheet(
-						"QSlider::right-arrow:horizontal, QSlider::left-arrow:horizontal {"
-						"	border: none;"
-						"	background: none;"
-						"	color: none;"
-						"}"
-					);
+					volume_slider->setStyleSheet(sliders_stylesheet);
+					volume_slider->setValue(data_manager->getVolume()*1000);
 				}
 
 				buttons_layout->addSpacing(3);
@@ -418,7 +470,7 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 				//PLAYLIST CONTROL
 				{
 					buttons_layout->addWidget(playlist_show_hide_button);
-					playlist_show_hide_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_control/audio_muted.png"));
+					playlist_show_hide_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_control/show.png"));
 					playlist_show_hide_button->setFixedSize(64, 48);
 					playlist_show_hide_button->setIconSize(QSize(52, 36));
 					playlist_show_hide_button->setFlat(true);
@@ -427,13 +479,83 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 					QObject::connect(playlist_show_hide_button, &QPushButton::released, [&]() {
 							if (playlist_show_hide_button->property("active").toBool()) {
 								emit hidePlaylist();
+								playlist_show_hide_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_control/show.png"));
 								playlist_show_hide_button->setProperty("active", false);
 							}
 							else {
 								emit showPlaylist();
+								playlist_show_hide_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_control/hide.png"));
 								playlist_show_hide_button->setProperty("active", true);
 							}
 					});
+
+					buttons_layout->addWidget(playlist_clear_button);
+					playlist_clear_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_control/clear_playlist.png"));
+					playlist_clear_button->setFixedSize(64, 48);
+					playlist_clear_button->setIconSize(QSize(52, 36));
+					playlist_clear_button->setFlat(true);
+					playlist_clear_button->setStyleSheet(buttons_stylesheet);
+					QObject::connect(playlist_clear_button, &QPushButton::released, [&]() {
+						QMessageBox box(this);
+						box.setWindowTitle("Clearing");
+						box.setText("Do you really wan't to clear playlist?");
+						box.setIcon(QMessageBox::Icon::Question);
+						box.setStandardButtons(QMessageBox::StandardButton::Yes | QMessageBox::StandardButton::No);
+						if (QMessageBox::StandardButton::Yes == box.exec()) {
+							m_MusicPlaylist->clear();
+							playlist_music_selector->clear();
+						}
+					});
+				}
+
+				buttons_layout->addSpacing(3);
+				buttons_layout->addWidget(separator_fullscreen_frame);
+				separator_fullscreen_frame->setFrameShape(QFrame::Shape::VLine);
+				separator_fullscreen_frame->setStyleSheet(""
+					"QFrame{"
+					"	background-color: #aaaaaa"
+					"}"
+				);
+				buttons_layout->addSpacing(3);
+
+				//FULLSCREEN
+				{
+					buttons_layout->addWidget(go_fullscreen_button);
+					go_fullscreen_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/visualiser_control/go_fullscreen.png"));
+					go_fullscreen_button->setProperty("active", false);
+					go_fullscreen_button->setFixedSize(64, 64);
+					go_fullscreen_button->setIconSize(QSize(52, 52));
+					go_fullscreen_button->setFlat(true);
+					go_fullscreen_button->setStyleSheet(buttons_stylesheet);
+					QObject::connect(go_fullscreen_button, &QPushButton::released, [&]() {
+						if (go_fullscreen_button->property("active").toBool()) {
+							//music_visualiser->setParent(this);
+
+							//buttons_layout->addWidget(go_fullscreen_button);
+
+							go_fullscreen_button->setProperty("active", false);
+							go_fullscreen_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/visualiser_control/go_fullscreen.png"));
+							this->showNormal();
+						}
+						else {
+							//buttons_layout->removeWidget(go_fullscreen_button);
+
+							//music_visualiser->setAttribute(Qt::WA_TranslucentBackground);
+							//music_visualiser->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Tool);
+							//music_visualiser->setGeometry(QApplication::primaryScreen()->geometry());
+							//music_visualiser->setParent(new QDesktopWidget());
+							
+							//go_fullscreen_button->setAttribute(Qt::WA_TranslucentBackground);
+							//go_fullscreen_button->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Tool);
+							//go_fullscreen_button->setGeometry(QApplication::primaryScreen()->geometry());
+							//go_fullscreen_button->setParent(new QDesktopWidget());
+
+							go_fullscreen_button->setProperty("active", true);
+							go_fullscreen_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/visualiser_control/go_window.png"));
+							this->showFullScreen();
+						}
+					});
+
 				}
 			}
 		}
@@ -442,6 +564,11 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 	}
 	//WIDGET INITIALIZATION
 	{
+		this->setStyleSheet(""
+			"MusicPlayer{"
+			"	background: qlineargradient(x1 : 0, y1 :0, x2 : 0, y2 : 1, stop : 0 #ffffff, stop : 0.8 #ffffff, stop: 0.9 #B0E0E6, stop: 1 #B0E0E6);"
+			"}"
+		);
 		this->setAcceptDrops(true);
 	}
 	//PLAYLIST STATE MACHINE
@@ -449,11 +576,11 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 		playlist_state_machine = new QStateMachine(this);
 
 		QState *hide_state = new QState(playlist_state_machine);
-		hide_state->assignProperty(this, "playlistShowPercent", QSize(0,0));
+		hide_state->assignProperty(this, "playlistShowPercent", 0.0);
 		playlist_state_machine->setInitialState(hide_state);
 
 		QState *show_state = new QState(playlist_state_machine);
-		show_state->assignProperty(this, "playlistShowPercent", QSize(200, 800));
+		show_state->assignProperty(this, "playlistShowPercent", 1.0);
 
 		QPropertyAnimation* prop_anim = new QPropertyAnimation(this, "playlistShowPercent");
 		prop_anim->setEasingCurve(QEasingCurve::OutSine);
@@ -528,38 +655,36 @@ void MusicPlayer::init()
 		refresh_callback_timer = new QTimer();
 		QObject::connect(refresh_callback_timer, &QTimer::timeout, [&]() {
 			emit positionChanged(position());
-			if (this->isVisible()) {
-				if (position() >= duration()) {
-					if (m_MusicPlaylist) {
-						switch (m_MusicPlaylist->playbackMode()) {
-						case MusicPlaylist::PlaybackMode::CurrentItemOnce:
-							stop();
-							break;
-						case MusicPlaylist::PlaybackMode::CurrentItemInLoop:
-							play();
-							break;
-						case MusicPlaylist::PlaybackMode::Loop:
-						default:
+			if (position() >= duration()) {
+				if (m_MusicPlaylist) {
+					switch (m_MusicPlaylist->playbackMode()) {
+					case MusicPlaylist::PlaybackMode::CurrentItemOnce:
+						stop();
+						break;
+					case MusicPlaylist::PlaybackMode::CurrentItemInLoop:
+						play();
+						break;
+					case MusicPlaylist::PlaybackMode::Loop:
+					default:
+						m_MusicPlaylist->next();
+						play();
+						break;
+					case MusicPlaylist::PlaybackMode::Sequential:
+						if (m_MusicPlaylist->currentIndex() != m_MusicPlaylist->musicCount() - 1) {
 							m_MusicPlaylist->next();
 							play();
-							break;
-						case MusicPlaylist::PlaybackMode::Sequential:
-							if (m_MusicPlaylist->currentIndex() != m_MusicPlaylist->musicCount() - 1) {
-								m_MusicPlaylist->next();
-								play();
-							}
-							else {
-								stop();
-							}
-							break;
-						case MusicPlaylist::PlaybackMode::Random:
-							m_MusicPlaylist->next();
-							play();
-							break;
 						}
-						emit currentMusicChanged(m_MusicPlaylist->currentMusicName());
-						emit currentMusicChanged(m_MusicPlaylist->currentIndex());
+						else {
+							stop();
+						}
+						break;
+					case MusicPlaylist::PlaybackMode::Random:
+						m_MusicPlaylist->next();
+						play();
+						break;
 					}
+					emit currentMusicChanged(m_MusicPlaylist->currentMusicName());
+					emit currentMusicChanged(m_MusicPlaylist->currentIndex());
 				}
 			}
 		});
@@ -567,15 +692,24 @@ void MusicPlayer::init()
 	}
 }
 
-QSize MusicPlayer::playlistShowPercent()
+float MusicPlayer::playlistShowPercent()
 {
-	return expectedSize;
+	return showPercent;
 }
 
-void MusicPlayer::setPlaylistShowPercent(const QSize & size)
+void MusicPlayer::setPlaylistShowPercent(float showPercent)
 {
-	expectedSize = size;
-	playlist_music_selector->setMaximumSize(size);
+	this->showPercent = showPercent;
+	if (showPercent == 1.0) {
+		playlist_music_selector->setMaximumHeight(QWIDGETSIZE_MAX);
+	}
+	else if (showPercent == 0.0) {
+		playlist_music_selector->setVisible(false);
+	}
+	else {
+		playlist_music_selector->setVisible(true);
+		playlist_music_selector->setMaximumHeight(this->height()*0.9*showPercent);
+	}
 }
 
 void MusicPlayer::attachVisualiser()
@@ -756,12 +890,42 @@ void MusicPlayer::dropEvent(QDropEvent * event)
 	}
 }
 
+void MusicPlayer::resizeEvent(QResizeEvent * event)
+{
+	if (music_visualiser->parentWidget() == this) {
+		music_visualiser->setGeometry(this->rect());
+	}
+}
+
+void MusicPlayer::mouseDoubleClickEvent(QMouseEvent * event)
+{
+	if (go_fullscreen_button->property("active").toBool()) {
+		go_fullscreen_button->setProperty("active", false);
+		go_fullscreen_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/visualiser_control/go_fullscreen.png"));
+		this->showNormal();
+	}
+	else {
+		go_fullscreen_button->setProperty("active", true);
+		go_fullscreen_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/visualiser_control/go_window.png"));
+		this->showFullScreen();
+	}
+}
+
 void MusicPlayer::closeEvent(QCloseEvent * event)
 {
 	event->setAccepted(false);
-	this->stop();
 	emit hiding();
 	this->hide();
+}
+
+void MusicPlayer::showEvent(QShowEvent * event)
+{
+	emit showing();
+}
+
+void MusicPlayer::hideEvent(QHideEvent * event)
+{
+	emit hiding();
 }
 
 void MusicPlayer::pause(bool pause)

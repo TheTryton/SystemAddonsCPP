@@ -1,3 +1,4 @@
+/*
 #include "NetworkManager.h"
 
 #include <QJsonDocument>
@@ -86,3 +87,5 @@ NetworkManager* NetworkManager::getInstance() {
 	if (NetworkManager::instance == NULL)NetworkManager::instance = new NetworkManager();
 	return instance;
 }
+
+*/

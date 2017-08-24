@@ -1,5 +1,6 @@
 #pragma once
 
+/*
 #include <QUdpSocket>
 #include <QTimer>
 #include <QHostAddress>
@@ -31,3 +32,5 @@ private:
 	NetworkManager(QObject *parent = Q_NULLPTR);
 	~NetworkManager();
 };
+
+*/

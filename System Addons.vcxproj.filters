@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SystemAddonsPopup.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SystemAddonsPopup.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SystemAddonsPopup.cpp">
+      <Filter>Header Files\Popup\SystemAddonsPopup</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DataManager.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DataManager.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManager.cpp">
+      <Filter>Header Files\DataManagement\DataManager</Filter>
+    </ClCompile>
+    <ClCompile Include="BookmarkItem.cpp">
+      <Filter>Header Files\DataManagement\BookmarkItem</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_BookmarksManager.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_BookmarksManager.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="BookmarksManager.cpp">
+      <Filter>Header Files\Popup\BookmarksManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MusicPlayer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MusicPlayer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MathHelper.cpp">
+      <Filter>Header Files\Popup\MusicPlayer\MusicVisualizer\MathHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MusicVisualiser.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MusicVisualiser.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicVisualiser.cpp">
+      <Filter>Header Files\Popup\MusicPlayer\MusicVisualizer</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MusicPlaylist.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MusicPlaylist.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicPlaylist.cpp">
+      <Filter>Header Files\Popup\MusicPlayer\MusicPlaylist</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MusicSlider.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MusicSlider.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicPlayer.cpp">
+      <Filter>Header Files\Popup\MusicPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicSlider.cpp">
+      <Filter>Header Files\Popup\MusicPlayer\MusicSlider</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_images.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{e396af0c-475a-4f77-a595-24e13d25988c}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{2d1ce92e-3a61-44d2-b09f-55326350b692}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files\Resources">
+      <UniqueIdentifier>{71b5a344-77e8-4940-a071-72920adaa0b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DataManagement">
+      <UniqueIdentifier>{f0cd8d4e-6175-4873-9a13-cca17712103c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DataManagement\BookmarkItem">
+      <UniqueIdentifier>{bfbb3a55-ff70-4f6f-b0ff-9ac68f817b41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DataManagement\DataManager">
+      <UniqueIdentifier>{bbbdea77-21f7-4248-a1d4-f8c4eec4be9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Popup">
+      <UniqueIdentifier>{92f59894-7393-45a1-a2ac-6c0e6777c29a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Popup\SystemAddonsPopup">
+      <UniqueIdentifier>{378d028c-6f7e-4a84-a33e-f31f76e7aa5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Popup\BookmarksManager">
+      <UniqueIdentifier>{6385ee5d-7048-4a9a-bdb9-f392595b7c4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Popup\MusicPlayer">
+      <UniqueIdentifier>{26d1f99f-d9af-4464-84a0-ed435b1461f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Popup\MusicPlayer\MusicVisualizer">
+      <UniqueIdentifier>{6295d396-1e2e-4bc3-bff4-0e123bf42730}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Popup\MusicPlayer\MusicVisualizer\MathHelper">
+      <UniqueIdentifier>{4868f558-e943-4833-8ea4-a8ca8de88ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Popup\MusicPlayer\MusicPlaylist">
+      <UniqueIdentifier>{99848ad7-e271-4b60-9206-015127bfe5fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Popup\MusicPlayer\MusicSlider">
+      <UniqueIdentifier>{2c7a51e6-d34f-4600-bd95-dc4f045d3e7b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="SystemAddonsPopup.h">
+      <Filter>Header Files\Popup\SystemAddonsPopup</Filter>
+    </CustomBuild>
+    <CustomBuild Include="DataManager.h">
+      <Filter>Header Files\DataManagement\DataManager</Filter>
+    </CustomBuild>
+    <CustomBuild Include="BookmarksManager.h">
+      <Filter>Header Files\Popup\BookmarksManager</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MusicPlayer.h">
+      <Filter>Header Files\Popup\MusicPlayer</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MusicPlaylist.h">
+      <Filter>Header Files\Popup\MusicPlayer\MusicPlaylist</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MusicSlider.h">
+      <Filter>Header Files\Popup\MusicPlayer\MusicSlider</Filter>
+    </CustomBuild>
+    <CustomBuild Include="images.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MusicVisualiser.h">
+      <Filter>Header Files\Popup\MusicPlayer\MusicVisualizer</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BookmarkItem.h">
+      <Filter>Header Files\DataManagement\BookmarkItem</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHelper.h">
+      <Filter>Header Files\Popup\MusicPlayer\MusicVisualizer\MathHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icons\System Addons.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="System Addons.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

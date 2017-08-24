@@ -23,5 +23,10 @@
         <file>icons/music_control/audio_75.png</file>
         <file>icons/music_control/audio_100.png</file>
         <file>icons/music_control/audio_muted.png</file>
+        <file>icons/music_control/clear_playlist.png</file>
+        <file>icons/music_control/hide.png</file>
+        <file>icons/music_control/show.png</file>
+        <file>icons/visualiser_control/go_window.png</file>
+        <file>icons/System Addons.png</file>
     </qresource>
 </RCC>
