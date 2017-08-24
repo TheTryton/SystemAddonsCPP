@@ -1,7 +1,6 @@
 #pragma once
 
-#include <QObject>
-#include <QString>
+#include <QtWidgets>
 #include <FMOD\fmod.hpp>
 
 class MusicPlaylist : public QObject

@@ -1,8 +1,5 @@
 #include "MusicPlaylist.h"
 
-#include <QFileInfo>
-#include <QTime>
-
 MusicPlaylist::MusicPlaylist(QObject *parent)
 	: QObject(parent)
 {

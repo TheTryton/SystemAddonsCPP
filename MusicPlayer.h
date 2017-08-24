@@ -16,7 +16,7 @@ class MusicVisualizerItem;
 class MusicPlayer : public QWidget
 {
 	Q_OBJECT
-	Q_PROPERTY(QSize playlistShowPercent READ playlistShowPercent WRITE setPlaylistShowPercent)
+	Q_PROPERTY(float playlistShowPercent READ playlistShowPercent WRITE setPlaylistShowPercent)
 	friend class SystemAddonsPopup;
 	friend class MusicVisualiser;
 public:
@@ -74,6 +74,7 @@ signals:
 	void musicRemoved();
 
 	void hiding();
+	void showing();
 
 	void hidePlaylist();
 	void showPlaylist();
@@ -81,11 +82,17 @@ protected:
 	virtual void dragEnterEvent(QDragEnterEvent* event) override;
 	virtual void dropEvent(QDropEvent* event) override;
 
+	virtual void resizeEvent(QResizeEvent* event) override;
+
+	virtual void mouseDoubleClickEvent(QMouseEvent* event) override;
+
 	virtual void closeEvent(QCloseEvent* event) override;
+	virtual void showEvent(QShowEvent * event) override;
+	virtual void hideEvent(QHideEvent * event) override;
 private:
 	void init();
-	QSize playlistShowPercent();
-	void setPlaylistShowPercent(const QSize& size);
+	float playlistShowPercent();
+	void setPlaylistShowPercent(float showPercent);
 private:
 	FMOD::System* m_MusicSystem = NULL;
 	FMOD::ChannelGroup* m_MainChannelGroup = NULL;
@@ -99,7 +106,7 @@ private:
 
 	QHBoxLayout* playlist_visualiser_layout = NULL;
 
-	QSize m_PlaylistShowPercent = QSize(0, 0);
+	QHBoxLayout* playlist_separation_layout = NULL;
 	QListWidget* playlist_music_selector = NULL;
 	
 	MusicVisualiser* music_visualiser = NULL;
@@ -132,7 +139,12 @@ private:
 	QPushButton* playlist_remove_button = NULL;
 	QPushButton* playlist_clear_button = NULL;
 	QPushButton* playlist_show_hide_button = NULL;
-	QSize expectedSize = QSize(0, 0);
+
+	QFrame* separator_fullscreen_frame = NULL;
+
+	QPushButton* go_fullscreen_button = NULL;
+
+	float showPercent = 0.0;
 	QStateMachine* playlist_state_machine = NULL;
 
 	QTimer* refresh_callback_timer = NULL;

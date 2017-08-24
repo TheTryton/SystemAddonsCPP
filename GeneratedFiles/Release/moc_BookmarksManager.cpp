@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'BookmarksManager.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.0)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.6.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,14 +12,12 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'BookmarksManager.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.0. It"
+#error "This file was generated using the moc from 5.6.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
-QT_WARNING_PUSH
-QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_BookmarksManager_t {
     QByteArrayData data[5];
     char stringdata0[54];
@@ -110,7 +108,7 @@ void BookmarksManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
 
 const QMetaObject BookmarksManager::staticMetaObject = {
     { &QWidget::staticMetaObject, qt_meta_stringdata_BookmarksManager.data,
-      qt_meta_data_BookmarksManager,  qt_static_metacall, nullptr, nullptr}
+      qt_meta_data_BookmarksManager,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
 };
 
 
@@ -121,7 +119,7 @@ const QMetaObject *BookmarksManager::metaObject() const
 
 void *BookmarksManager::qt_metacast(const char *_clname)
 {
-    if (!_clname) return nullptr;
+    if (!_clname) return Q_NULLPTR;
     if (!strcmp(_clname, qt_meta_stringdata_BookmarksManager.stringdata0))
         return static_cast<void*>(const_cast< BookmarksManager*>(this));
     return QWidget::qt_metacast(_clname);
@@ -147,19 +145,18 @@ int BookmarksManager::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void BookmarksManager::shouldLock()
 {
-    QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
+    QMetaObject::activate(this, &staticMetaObject, 0, Q_NULLPTR);
 }
 
 // SIGNAL 1
 void BookmarksManager::shouldClose()
 {
-    QMetaObject::activate(this, &staticMetaObject, 1, nullptr);
+    QMetaObject::activate(this, &staticMetaObject, 1, Q_NULLPTR);
 }
 
 // SIGNAL 2
 void BookmarksManager::changedColor()
 {
-    QMetaObject::activate(this, &staticMetaObject, 2, nullptr);
+    QMetaObject::activate(this, &staticMetaObject, 2, Q_NULLPTR);
 }
-QT_WARNING_POP
 QT_END_MOC_NAMESPACE

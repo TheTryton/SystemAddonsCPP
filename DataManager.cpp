@@ -60,11 +60,16 @@ bool DataManager::saveData(QString filename, bool save_as_binary)
 	}
 	//PLAYLIST DATA
 	{
-		QJsonArray playlist_data;
-		for (int i = 0; i < this->playlist.size(); i++) {
-			playlist_data.append(this->playlist[i]);
+		QJsonObject music_player_data;
+		{
+			QJsonArray playlist_data;
+			for (int i = 0; i < this->playlist.size(); i++) {
+				playlist_data.append(this->playlist[i]);
+			}
+			music_player_data["playlist_data"] = playlist_data;
+			music_player_data["music_volume"] = popup_configuration_data["music_volume"].toDouble();
 		}
-		root_data_object["playlist_data"] = playlist_data;
+		root_data_object["music_player_data"] = music_player_data;
 	}
 	QJsonDocument save_document(root_data_object);
 	save_file.write(save_as_binary ? save_document.toBinaryData() : save_document.toJson());
@@ -194,13 +199,23 @@ bool DataManager::loadData(QString filename, bool load_as_binary)
 			}
 		}
 		//PLAYLIST DATA
-		if (root_data_object.contains("playlist_data")) {
-			this->playlist.clear();
-			if (root_data_object["playlist_data"].isArray()) {
-				QJsonArray playlist_data = root_data_object["playlist_data"].toArray();
-				for (int i = 0; i < playlist_data.size(); i++) {
-					if (playlist_data[i].isString()) {
-						playlist.append(playlist_data[i].toString());
+		if (root_data_object.contains("music_player_data")) {
+			if (root_data_object["music_player_data"].isObject()) {
+				QJsonObject music_player_data = root_data_object["music_player_data"].toObject();
+				if (music_player_data.contains("playlist_data")) {
+					if (music_player_data["playlist_data"].isArray()) {
+						this->playlist.clear();
+						QJsonArray playlist_data = music_player_data["playlist_data"].toArray();
+						for (int i = 0; i < playlist_data.size(); i++) {
+							if (playlist_data[i].isString()) {
+								playlist.append(playlist_data[i].toString());
+							}
+						}
+					}
+				}
+				if (music_player_data.contains("music_volume")) {
+					if (music_player_data["music_volume"].isDouble()) {
+						popup_configuration_data["music_volume"] = qMax(0.0, qMin(1.0, music_player_data["music_volume"].toDouble()));
 					}
 				}
 			}
@@ -220,6 +235,17 @@ QList<QString> DataManager::getPlaylist()
 void DataManager::setPlaylist(QList<QString> playlist)
 {
 	this->playlist = playlist;
+}
+
+double DataManager::getVolume()
+{
+	return popup_configuration_data["music_volume"].toDouble();
+}
+
+void DataManager::setVolume(double volume)
+{
+	volume = qMax(0.0, qMin(1.0, volume));
+	popup_configuration_data["music_volume"] = volume;
 }
 
 QColor DataManager::getBackgroundColor()

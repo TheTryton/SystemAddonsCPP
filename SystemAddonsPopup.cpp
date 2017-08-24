@@ -6,7 +6,6 @@
 #include <QSharedMemory>
 #include <QApplication>
 #include <QMouseEvent>
-#include <QDesktopWidget>
 #include <QScreen>
 #include <QPropertyAnimation>
 #include <QSignalTransition>
@@ -102,7 +101,7 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 		music_player_separator->setFrameShape(QFrame::Shape::VLine);
 		music_player_separator->setStyleSheet(""
 			"QFrame{"
-			"	border: 2px solid white"
+			"	border: 2px solid #B0C4DE"
 			"}");
 		music_player_separator->setFixedWidth(4);
 
@@ -115,13 +114,11 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 			if (music_player->isVisible()) 
 			{
 				music_player_show_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_inactive.png"));
-				music_player->stop();
 				music_player->hide();
 			}
 			else
 			{
 				music_player_show_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_active.png"));
-				music_player->play();
 				music_player->show();
 				music_player->repaint();
 			}
@@ -132,6 +129,10 @@ SystemAddonsPopup::SystemAddonsPopup(QWidget *parent)
 		music_player->setWindowIcon(QIcon(u8":/SystemAddonsPopup/icons/System Addons.ico"));
 		QObject::connect(music_player, &MusicPlayer::hiding, [&]() {
 			music_player_show_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_inactive.png"));
+			music_player_show_button->repaint();
+		});
+		QObject::connect(music_player, &MusicPlayer::showing, [&]() {
+			music_player_show_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_active.png"));
 			music_player_show_button->repaint();
 		});
 

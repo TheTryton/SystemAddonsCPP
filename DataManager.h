@@ -37,6 +37,9 @@ public:
 	QList<QString> getPlaylist();
 	void setPlaylist(QList<QString> playlist);
 
+	double getVolume();
+	void setVolume(double volume);
+
 	QColor getBackgroundColor();
 	QColor getDefaultBackgroundColor();
 	void setBackgroundColor(QColor color);

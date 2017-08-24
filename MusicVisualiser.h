@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QWidget>
+#include <QtWidgets>
 #include <FMOD\fmod.hpp>
 #include <time.h>
 
