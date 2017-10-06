@@ -17,6 +17,7 @@ BookmarkItem::~BookmarkItem()
 {
 }
 
+/*
 QString BookmarkItem::getInternetName()
 {
 	return data["internet_name"].toString();
@@ -35,7 +36,7 @@ bool BookmarkItem::getSynchronizeOverInternet()
 void BookmarkItem::setSynchronizeOverInternet(bool synchronize)
 {
 	data["synchronize_over_internet"] = synchronize;
-}
+}*/
 
 QString BookmarkItem::getVisibleName()
 {

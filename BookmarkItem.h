@@ -12,11 +12,11 @@ private:
 	void operator=(BookmarkItem const&) = delete;
 public:
 	//NETWORKING
-	QString getInternetName();
-	void setInternetName(QString name);
+	//QString getInternetName();
+	//void setInternetName(QString name);
 
-	bool getSynchronizeOverInternet();
-	void setSynchronizeOverInternet(bool synchronize);
+	//bool getSynchronizeOverInternet();
+	//void setSynchronizeOverInternet(bool synchronize);
 
 	//DISPLAY
 	QString getVisibleName();

@@ -23,11 +23,11 @@ private:
 	//BOOKMARKS
 	QList<BookmarkItem> bookmark_items;
 	//NETWORKING
-	QList<InternetName> internet_names;
+	//QList<InternetName> internet_names;
+	//LOCAL HOST IP
+	//QHostAddress local_host_address;
 	//POPUP CONFIGURATION
 	QMap<QString, QVariant> popup_configuration_data;
-	//LOCAL HOST IP
-	QHostAddress local_host_address;
 	//MEDIA PLAYLIST
 	QList<QString> playlist;
 public:
@@ -59,15 +59,15 @@ public:
 	QList<BookmarkItem>* getBookmarkItems();
 	void removeBookmark(int index);
 	const BookmarkItem* addBookmark(QString filename);
-	QList<InternetName>* getInternetNames();
+	//QList<InternetName>* getInternetNames();
 
-	bool registerInternetName(QString name);
-	void unregisterInternetName(QString name);
-	void addDetectedInternetName(QString name, QHostAddress host_address);
-	void removeAllDetectedInternetNames();
-	void unregisterAllRegisteredInternetNames();
+	//bool registerInternetName(QString name);
+	//void unregisterInternetName(QString name);
+	//void addDetectedInternetName(QString name, QHostAddress host_address);
+	//void removeAllDetectedInternetNames();
+	//void unregisterAllRegisteredInternetNames();
 
-	QHostAddress getLocalhostAddress();
+	//QHostAddress getLocalhostAddress();
 private:
 	DataManager(QObject *parent = Q_NULLPTR);
 	~DataManager();

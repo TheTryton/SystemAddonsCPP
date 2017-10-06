@@ -13,24 +13,6 @@
     <ClCompile Include="SystemAddonsPopup.cpp">
       <Filter>Header Files\Popup\SystemAddonsPopup</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_NetworkManager.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_NetworkManager.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="NetworkManager.cpp">
-      <Filter>Header Files\Networking\NetworkManager</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_InternetNameSelectionDialog.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_InternetNameSelectionDialog.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="InternetNameSelectionDialog.cpp">
-      <Filter>Header Files\InternetNameSelectionDialog</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_DataManager.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -42,9 +24,6 @@
     </ClCompile>
     <ClCompile Include="BookmarkItem.cpp">
       <Filter>Header Files\DataManagement\BookmarkItem</Filter>
-    </ClCompile>
-    <ClCompile Include="InternetName.cpp">
-      <Filter>Header Files\DataManagement\InternetName</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_BookmarksManager.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -134,9 +113,6 @@
       <Extensions>ui</Extensions>
       <ParseFiles>true</ParseFiles>
     </Filter>
-    <Filter Include="Header Files\InternetNameSelectionDialog">
-      <UniqueIdentifier>{ed1c6698-cf84-4dca-b842-31717d1f0a68}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Resources">
       <UniqueIdentifier>{71b5a344-77e8-4940-a071-72920adaa0b9}</UniqueIdentifier>
     </Filter>
@@ -148,15 +124,6 @@
     </Filter>
     <Filter Include="Header Files\DataManagement\DataManager">
       <UniqueIdentifier>{bbbdea77-21f7-4248-a1d4-f8c4eec4be9c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\DataManagement\InternetName">
-      <UniqueIdentifier>{23311642-ac8c-46dc-b03c-bccb4f332877}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Networking">
-      <UniqueIdentifier>{a4eda750-32e5-4dae-b729-761bbc534f6a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Networking\NetworkManager">
-      <UniqueIdentifier>{8776b977-e09d-4acd-8423-e77d8d6f955a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Popup">
       <UniqueIdentifier>{92f59894-7393-45a1-a2ac-6c0e6777c29a}</UniqueIdentifier>
@@ -187,12 +154,6 @@
     <CustomBuild Include="SystemAddonsPopup.h">
       <Filter>Header Files\Popup\SystemAddonsPopup</Filter>
     </CustomBuild>
-    <CustomBuild Include="NetworkManager.h">
-      <Filter>Header Files\Networking\NetworkManager</Filter>
-    </CustomBuild>
-    <CustomBuild Include="InternetNameSelectionDialog.h">
-      <Filter>Header Files\InternetNameSelectionDialog</Filter>
-    </CustomBuild>
     <CustomBuild Include="DataManager.h">
       <Filter>Header Files\DataManagement\DataManager</Filter>
     </CustomBuild>
@@ -219,11 +180,21 @@
     <ClInclude Include="BookmarkItem.h">
       <Filter>Header Files\DataManagement\BookmarkItem</Filter>
     </ClInclude>
-    <ClInclude Include="InternetName.h">
-      <Filter>Header Files\DataManagement\InternetName</Filter>
-    </ClInclude>
     <ClInclude Include="MathHelper.h">
       <Filter>Header Files\Popup\MusicPlayer\MusicVisualizer\MathHelper</Filter>
     </ClInclude>
+    <ClInclude Include="resource1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icons\System Addons.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="System Addons.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

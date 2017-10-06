@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'MusicPlayer.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.6.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.1)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,12 +12,14 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'MusicPlayer.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.6.2. It"
+#error "This file was generated using the moc from 5.9.1. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
 QT_BEGIN_MOC_NAMESPACE
+QT_WARNING_PUSH
+QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MusicPlayer_t {
     QByteArrayData data[31];
     char stringdata0[324];
@@ -301,7 +303,7 @@ void MusicPlayer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
 
 const QMetaObject MusicPlayer::staticMetaObject = {
     { &QWidget::staticMetaObject, qt_meta_stringdata_MusicPlayer.data,
-      qt_meta_data_MusicPlayer,  qt_static_metacall, Q_NULLPTR, Q_NULLPTR}
+      qt_meta_data_MusicPlayer,  qt_static_metacall, nullptr, nullptr}
 };
 
 
@@ -312,7 +314,7 @@ const QMetaObject *MusicPlayer::metaObject() const
 
 void *MusicPlayer::qt_metacast(const char *_clname)
 {
-    if (!_clname) return Q_NULLPTR;
+    if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_MusicPlayer.stringdata0))
         return static_cast<void*>(const_cast< MusicPlayer*>(this));
     return QWidget::qt_metacast(_clname);
@@ -355,92 +357,93 @@ int MusicPlayer::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 // SIGNAL 0
 void MusicPlayer::positionChanged(uint _t1)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
 void MusicPlayer::mutedChanged(bool _t1)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 // SIGNAL 2
 void MusicPlayer::volumeChanged(int _t1)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
 // SIGNAL 3
 void MusicPlayer::stateChanged(MusicState _t1)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 
 // SIGNAL 4
 void MusicPlayer::durationChanged(uint _t1)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 4, _a);
 }
 
 // SIGNAL 5
 void MusicPlayer::currentMusicChanged(const QString & _t1)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 5, _a);
 }
 
 // SIGNAL 6
 void MusicPlayer::currentMusicChanged(int _t1)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 6, _a);
 }
 
 // SIGNAL 7
 void MusicPlayer::loadingFailed(const QString & _t1)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 7, _a);
 }
 
 // SIGNAL 8
 void MusicPlayer::musicAdded()
 {
-    QMetaObject::activate(this, &staticMetaObject, 8, Q_NULLPTR);
+    QMetaObject::activate(this, &staticMetaObject, 8, nullptr);
 }
 
 // SIGNAL 9
 void MusicPlayer::musicRemoved()
 {
-    QMetaObject::activate(this, &staticMetaObject, 9, Q_NULLPTR);
+    QMetaObject::activate(this, &staticMetaObject, 9, nullptr);
 }
 
 // SIGNAL 10
 void MusicPlayer::hiding()
 {
-    QMetaObject::activate(this, &staticMetaObject, 10, Q_NULLPTR);
+    QMetaObject::activate(this, &staticMetaObject, 10, nullptr);
 }
 
 // SIGNAL 11
 void MusicPlayer::showing()
 {
-    QMetaObject::activate(this, &staticMetaObject, 11, Q_NULLPTR);
+    QMetaObject::activate(this, &staticMetaObject, 11, nullptr);
 }
 
 // SIGNAL 12
 void MusicPlayer::hidePlaylist()
 {
-    QMetaObject::activate(this, &staticMetaObject, 12, Q_NULLPTR);
+    QMetaObject::activate(this, &staticMetaObject, 12, nullptr);
 }
 
 // SIGNAL 13
 void MusicPlayer::showPlaylist()
 {
-    QMetaObject::activate(this, &staticMetaObject, 13, Q_NULLPTR);
+    QMetaObject::activate(this, &staticMetaObject, 13, nullptr);
 }
+QT_WARNING_POP
 QT_END_MOC_NAMESPACE

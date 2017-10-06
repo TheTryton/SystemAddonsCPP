@@ -343,8 +343,8 @@ MusicPlayer::MusicPlayer(QWidget *parent)
 					});
 
 					buttons_layout->addWidget(play_pause_button);
-					play_pause_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_control/pause.png"));
-					play_pause_button->setProperty("active", 1);
+					play_pause_button->setIcon(QIcon(u8":/SystemAddonsPopup/icons/music_control/play.png"));
+					play_pause_button->setProperty("active", 0);
 					play_pause_button->setFixedSize(64, 64);
 					play_pause_button->setIconSize(QSize(52, 52));
 					play_pause_button->setFlat(true);
@@ -655,38 +655,36 @@ void MusicPlayer::init()
 		refresh_callback_timer = new QTimer();
 		QObject::connect(refresh_callback_timer, &QTimer::timeout, [&]() {
 			emit positionChanged(position());
-			if (this->isVisible()) {
-				if (position() >= duration()) {
-					if (m_MusicPlaylist) {
-						switch (m_MusicPlaylist->playbackMode()) {
-						case MusicPlaylist::PlaybackMode::CurrentItemOnce:
-							stop();
-							break;
-						case MusicPlaylist::PlaybackMode::CurrentItemInLoop:
-							play();
-							break;
-						case MusicPlaylist::PlaybackMode::Loop:
-						default:
+			if (position() >= duration()) {
+				if (m_MusicPlaylist) {
+					switch (m_MusicPlaylist->playbackMode()) {
+					case MusicPlaylist::PlaybackMode::CurrentItemOnce:
+						stop();
+						break;
+					case MusicPlaylist::PlaybackMode::CurrentItemInLoop:
+						play();
+						break;
+					case MusicPlaylist::PlaybackMode::Loop:
+					default:
+						m_MusicPlaylist->next();
+						play();
+						break;
+					case MusicPlaylist::PlaybackMode::Sequential:
+						if (m_MusicPlaylist->currentIndex() != m_MusicPlaylist->musicCount() - 1) {
 							m_MusicPlaylist->next();
 							play();
-							break;
-						case MusicPlaylist::PlaybackMode::Sequential:
-							if (m_MusicPlaylist->currentIndex() != m_MusicPlaylist->musicCount() - 1) {
-								m_MusicPlaylist->next();
-								play();
-							}
-							else {
-								stop();
-							}
-							break;
-						case MusicPlaylist::PlaybackMode::Random:
-							m_MusicPlaylist->next();
-							play();
-							break;
 						}
-						emit currentMusicChanged(m_MusicPlaylist->currentMusicName());
-						emit currentMusicChanged(m_MusicPlaylist->currentIndex());
+						else {
+							stop();
+						}
+						break;
+					case MusicPlaylist::PlaybackMode::Random:
+						m_MusicPlaylist->next();
+						play();
+						break;
 					}
+					emit currentMusicChanged(m_MusicPlaylist->currentMusicName());
+					emit currentMusicChanged(m_MusicPlaylist->currentIndex());
 				}
 			}
 		});

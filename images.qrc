@@ -27,5 +27,6 @@
         <file>icons/music_control/hide.png</file>
         <file>icons/music_control/show.png</file>
         <file>icons/visualiser_control/go_window.png</file>
+        <file>icons/System Addons.png</file>
     </qresource>
 </RCC>

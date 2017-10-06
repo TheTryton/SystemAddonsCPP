@@ -264,7 +264,8 @@ void BookmarksManager::mousePressEvent(QMouseEvent * event)
 					icon_menu.addAction(restore_default_icon);
 				}
 				item_menu.addMenu(&icon_menu);
-				
+
+				/*
 				QMenu network_menu("Network");
 				{
 					QAction* sync_over_internet = new QAction(u8"Synchronize over internet?", this);
@@ -309,6 +310,7 @@ void BookmarksManager::mousePressEvent(QMouseEvent * event)
 					}
 				}
 				item_menu.addMenu(&network_menu);
+				*/
 
 				QAction* open_file_location = new QAction(u8"Open file location", this);
 				QObject::connect(open_file_location, &QAction::triggered, [=](bool checked) {
@@ -412,7 +414,7 @@ void BookmarksManager::paintEvent(QPaintEvent * event)
 		QImage* img = (QImage*)(*bookmark_items)[i].getVisibleImage();
 
 		painter.drawImage(QRectF(QPoint(item_position.x() + (item_size.width() - img->width()) / 2, item_position.y() + (item_size.height() / 2 - img->height()) / 2), QSize(img->width(), img->height())), *img);
-		if((*bookmark_items)[i].getSynchronizeOverInternet())painter.drawImage(QRectF(QPoint(item_position.x(), item_position.y()), QSize(sync_img.width(), sync_img.height())), sync_img);
+		//if((*bookmark_items)[i].getSynchronizeOverInternet())painter.drawImage(QRectF(QPoint(item_position.x(), item_position.y()), QSize(sync_img.width(), sync_img.height())), sync_img);
 		painter.setPen(QColor(255, 255, 255));
 		painter.drawText(QRectF(QPoint(item_position.x(), item_position.y() + item_size.height() / 2), QSize(item_size.width(), item_size.height() / 2)), Qt::AlignTop | Qt::AlignCenter | Qt::TextWordWrap, (*bookmark_items)[i].getVisibleName());
 		painter.drawImage(QRectF(QPoint(item_position.x() + (item_size.width() - img->width()) / 2, item_position.y() + (item_size.height() / 2 - img->height()) / 2), QSize(img->width(), img->height())), *img);
