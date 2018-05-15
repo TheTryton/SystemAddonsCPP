@@ -228,9 +228,6 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="System Addons.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="icons\System Addons.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -123,23 +123,10 @@ void MusicVisualizerItem::draw(QPainter * painter)
 			double scale = m_MaxLength*m_Length;
 
 			painter->setBrush(QBrush(m_Color));
-			painter->drawEllipse(QRect
-			(
-				width*m_Position.x() - circleDimensions*scale,
-				height*m_Position.y() - circleDimensions*scale,
-				circleDimensions*scale * 2,
-				circleDimensions*scale * 2
-			));
 
-			for (auto& object : bursted_objects) {
-				painter->drawEllipse(QRect
-				(
-					width*object.first.x() - circleDimensions*0.005,
-					height*object.first.y() - circleDimensions*0.005,
-					circleDimensions*0.01,
-					circleDimensions*0.01
-				));
-			}
+            drawSubsphere(painter,
+                QPoint(width*m_Position.x() - circleDimensions*scale, height*m_Position.y() - circleDimensions*scale),
+                circleDimensions*scale * 2);
 		}
 	}
 	break;
@@ -151,7 +138,7 @@ void MusicVisualizerItem::draw(QPainter * painter)
 void MusicVisualizerItem::update(double deltaTime, double sampleValue, double volume)
 {
 	m_LengthTarget = qMin(volume / 3.5, sampleValue)*(3.5 / volume);
-
+    /*
 	if (m_LengthTarget > 0.80) {
 		int reserved = qMin(360, bursted_objects.size() + 60) - bursted_objects.size();
 		bursted_objects.reserve(qMin(360, bursted_objects.size() + 60));
@@ -176,11 +163,28 @@ void MusicVisualizerItem::update(double deltaTime, double sampleValue, double vo
 			bursted_objects.erase(bursted_objects.begin() + i);
 		}
 	}
-
+    */
 	if (m_LengthTarget > m_Length)
 		m_Length = qMin(m_LengthTarget, m_Length + MathHelper::interpolateCubic(1.0, 0.1, m_Length)*m_LengthGain*deltaTime);
 	else if (m_LengthTarget < m_Length)
 		m_Length = qMax(0.0, m_Length - MathHelper::interpolateCubic(0.1, 1.0, m_Length)*m_LengthFalloff*deltaTime);
 
 	m_Color.setAlpha(MathHelper::inverseInterpolateCubic(0.4, 1.0, m_Length) * 255);
+}
+
+void MusicVisualizerItem::drawSubsphere(QPainter* painter, QPoint p, float radius)
+{
+    painter->drawEllipse(QRect
+    ( 
+        p.x(),
+        p.y(),
+        radius,
+        radius
+    ));
+    if (radius > 6) {
+        int x1 = qrand();
+        int x2 = qrand();
+        drawSubsphere(painter, QPoint(p.x() + cos(x1)*radius, p.y() + sin(x1)*radius), radius / 2);
+        drawSubsphere(painter, QPoint(p.x() + cos(x2)*radius, p.y() + sin(x2)*radius), radius / 2);
+    }
 }

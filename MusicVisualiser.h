@@ -55,5 +55,6 @@ public:
 	void draw(QPainter* painter);
 	void update(double deltaTime, double sampleValue, double volume);
 private:
+    void drawSubsphere(QPainter* painter, QPoint p, float radius);
 	double m_LengthTarget = 0;
 };
